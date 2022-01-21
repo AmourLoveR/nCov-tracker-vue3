@@ -1,25 +1,36 @@
 <template>
-  <div id="china" :style="{ width: '800px', height: '600px' }"></div>
+  <div id="china" :style="{ width: '1000px', height: '1000px' }"></div>
 </template>
 
 <script>
 import * as echarts from "echarts";
-import axios from 'axios'
+import axios from "axios";
 import china from "../../assets/json/china.json";
 import { onMounted } from "vue";
 export default {
   name: "China",
   setup() {
-    onMounted(() => {
-      axios.get('/api').then(res => {
-        alert('请求成功')
-      })
+    onMounted(async () => {
+      let provinceData = [];
+      if (localStorage.getItem("province"))
+        provinceData = JSON.parse(localStorage.getItem("province"));
+      else {
+        const res = await axios.get("/api");
+        const data = JSON.parse(res.data.data);
+        for (let item of data.areaTree[0].children) {
+          const provinceObj = {
+            name: item.name,
+            value: item.total.nowConfirm,
+          };
+          provinceData.push(provinceObj);
+        }
+        console.log(data);
+
+        localStorage.setItem("province", JSON.stringify(provinceData));
+      }
 
       const chinaChart = echarts.init(document.getElementById("china"));
       echarts.registerMap("china", china);
-      function randomData() {
-        return Math.round(Math.random() * 50);
-      }
       // 绘制图表
       chinaChart.setOption({
         tooltip: {
@@ -56,6 +67,9 @@ export default {
             },
             center: [106, 26],
             layoutCenter: ["100%", "100%"],
+            label: {
+              show: true,
+            },
             emphasis: {
               label: {
                 show: true,
@@ -74,42 +88,7 @@ export default {
                 areaColor: "#A6F4F7",
               },
             },
-            data: [
-              { name: "北京", value: randomData() },
-              { name: "天津", value: randomData() },
-              { name: "上海", value: randomData() },
-              { name: "重庆", value: randomData() },
-              { name: "河北", value: randomData() },
-              { name: "河南", value: 160 },
-              { name: "云南", value: 1600 },
-              { name: "辽宁", value: 10000 },
-              { name: "黑龙江", value: randomData() },
-              { name: "湖南", value: randomData() },
-              { name: "安徽", value: randomData() },
-              { name: "山东", value: randomData() },
-              { name: "新疆", value: randomData() },
-              { name: "江苏", value: 0 },
-              { name: "浙江", value: randomData() },
-              { name: "江西", value: randomData() },
-              { name: "湖北", value: randomData() },
-              { name: "广西", value: randomData() },
-              { name: "甘肃", value: randomData() },
-              { name: "山西", value: randomData() },
-              { name: "内蒙古", value: randomData() },
-              { name: "陕西", value: randomData() },
-              { name: "吉林", value: 1600 },
-              { name: "福建", value: randomData() },
-              { name: "贵州", value: randomData() },
-              { name: "广东", value: randomData() },
-              { name: "青海", value: randomData() },
-              { name: "西藏", value: randomData() },
-              { name: "四川", value: randomData() },
-              { name: "宁夏", value: randomData() },
-              { name: "海南", value: randomData() },
-              { name: "台湾", value: randomData() },
-              { name: "香港", value: randomData() },
-              { name: "澳门", value: randomData() },
-            ],
+            data: provinceData
           },
         ],
       });
