@@ -1,32 +1,22 @@
 <template>
-  <div id="china" :style="{ width: '1000px', height: '1000px' }"></div>
+  <div id="china" :style="{ width: '100%', height: '100vh' }"></div>
 </template>
 
 <script>
-import * as echarts from "echarts";
-import axios from "axios";
-import china from "../../assets/json/china.json";
 import { onMounted } from "vue";
+import * as echarts from "echarts";
+import china from "../../assets/json/china.json";
+import { getChina, getProvience } from "../../api/china";
+
 export default {
   name: "China",
   setup() {
     onMounted(async () => {
       let provinceData = [];
-      if (localStorage.getItem("province"))
-        provinceData = JSON.parse(localStorage.getItem("province"));
-      else {
-        const res = await axios.get("/api");
-        const data = JSON.parse(res.data.data);
-        for (let item of data.areaTree[0].children) {
-          const provinceObj = {
-            name: item.name,
-            value: item.total.nowConfirm,
-          };
-          provinceData.push(provinceObj);
-        }
-        console.log(data);
-
-        localStorage.setItem("province", JSON.stringify(provinceData));
+      const res = await getProvience('now')
+      for(let item of res.data.data) {
+        const province = { name: item.name, value: item.total.nowConfirm }
+        provinceData.push(province)
       }
 
       const chinaChart = echarts.init(document.getElementById("china"));
@@ -88,7 +78,7 @@ export default {
                 areaColor: "#A6F4F7",
               },
             },
-            data: provinceData
+            data: provinceData,
           },
         ],
       });

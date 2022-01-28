@@ -10,10 +10,10 @@ export default defineConfig({
     open: true,
     host: '0.0.0.0',
     proxy: {
-      '^/api': {
-        target: 'https://view.inews.qq.com/g2/getOnsInfo?name=disease_h5',
+      '^/api/v1': {
+        target: 'http://myhost.fallen-angle.com:8081',
         changeOrigin: true, //开启代理
-        rewrite: (path) => path.replace(/^\/api/, '')
+        // rewrite: (path) => path.replace(/^\/api/, '')
       }
     }
   }
