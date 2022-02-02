@@ -1,9 +1,10 @@
 <template>
-  <div id="china" :style="{ width: '100%', height: '100vh' }"></div>
+  <div id="china"></div>
 </template>
 
 <script>
 import { onMounted } from "vue";
+import { useMessage } from 'naive-ui'
 import * as echarts from "echarts";
 import china from "../../assets/json/china.json";
 import { getChina, getProvience } from "../../api/china";
@@ -11,6 +12,7 @@ import { getChina, getProvience } from "../../api/china";
 export default {
   name: "China",
   setup() {
+    const message = useMessage()
     onMounted(async () => {
       let provinceData = [];
       const res = await getProvience('now')
@@ -84,6 +86,7 @@ export default {
       });
       chinaChart.on("click", function (params) {
         console.log(params); //此处写点击事件内容
+        message.info(params.data.name)
       });
     });
   },
@@ -93,6 +96,8 @@ export default {
 <style lang="scss" scoped>
 #china {
   margin: 0 auto;
+  width: 100%;
+  height: calc(100vh - 60px);
   background-color: #f8f9fa;
   box-sizing: border-box;
 }
