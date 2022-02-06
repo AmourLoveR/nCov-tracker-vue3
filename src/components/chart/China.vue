@@ -97,7 +97,7 @@ export default {
 #china {
   margin: 0 auto;
   width: 100%;
-  height: calc(100vh - 60px);
+  height: calc(100vh - 64px);
   background-color: #f8f9fa;
   box-sizing: border-box;
 }
