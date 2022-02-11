@@ -1,6 +1,5 @@
-import service from "../utils/request"
+import service from "../utils/axios"
 
-// 获取seller
 export function getChina() {
     return service.request({
         method: 'get',
@@ -12,5 +11,12 @@ export function getProvience(sort) {
     return service.request({
         method: 'get',
         url: '/statistics/provience/' + sort,
+    })
+}
+
+export function getCity(sort) {
+    return service.request({
+        method: 'get',
+        url: '/statistics/city/' + sort,
     })
 }

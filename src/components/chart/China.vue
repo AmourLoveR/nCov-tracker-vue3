@@ -4,21 +4,21 @@
 
 <script>
 import { onMounted } from "vue";
-import { useMessage } from 'naive-ui'
+import { useMessage } from "naive-ui";
 import * as echarts from "echarts";
 import china from "../../assets/json/china.json";
-import { getChina, getProvience } from "../../api/china";
+import { getProvience } from "../../api/china";
 
 export default {
   name: "China",
   setup() {
-    const message = useMessage()
+    const message = useMessage();
     onMounted(async () => {
       let provinceData = [];
-      const res = await getProvience('now')
-      for(let item of res.data.data) {
-        const province = { name: item.name, value: item.total.nowConfirm }
-        provinceData.push(province)
+      const provinceRes = await getProvience("now");
+      for (let item of provinceRes.data.data) {
+        const province = { name: item.name, value: item.total.nowConfirm };
+        provinceData.push(province);
       }
 
       const chinaChart = echarts.init(document.getElementById("china"));
@@ -86,7 +86,7 @@ export default {
       });
       chinaChart.on("click", function (params) {
         console.log(params); //此处写点击事件内容
-        message.info(params.data.name)
+        message.info(params.data.name);
       });
     });
   },
@@ -97,7 +97,7 @@ export default {
 #china {
   margin: 0 auto;
   width: 100%;
-  height: calc(100vh - 64px);
+  height: calc(100vh - 60px);
   background-color: #f8f9fa;
   box-sizing: border-box;
 }

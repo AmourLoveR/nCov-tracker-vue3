@@ -115,8 +115,8 @@ export default {
 <style lang="scss" scoped>
 .n-layout-header {
   background: #fff;
-  height: 64px;
-  line-height: 64px;
+  height: 60px;
+  line-height: 60px;
   color: #10aeb5;
   font-size: 18px;
   position: relative;
@@ -136,12 +136,6 @@ export default {
 
 .n-layout-content {
   background: #f5f7f9;
-  min-height: calc(100vh - 64px);
-}
-</style>
-
-<style>
-.n-menu .n-menu-item {
-  /* background: #fff; */
+  min-height: calc(100vh - 60px);
 }
 </style>
