@@ -10,13 +10,13 @@ export function getChina() {
 export function getProvience(sort) {
     return service.request({
         method: 'get',
-        url: '/statistics/provience/' + sort,
+        url: `/statistics/provience/${sort}`,
     })
 }
 
 export function getCity(sort) {
     return service.request({
         method: 'get',
-        url: '/statistics/city/' + sort,
+        url: `/statistics/city/${sort}`,
     })
 }
