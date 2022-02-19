@@ -91,6 +91,11 @@ export default {
       },
       {
         label: "疫情数据报告",
+        key: "/report",
+        icon: renderIcon(SpeedometerOutline),
+      },
+      {
+        label: "数据大屏",
         key: "/visualization",
         icon: renderIcon(SpeedometerOutline),
       },
