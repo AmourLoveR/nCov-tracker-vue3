@@ -3,7 +3,7 @@
     <div class="hover">
       <Domestic></Domestic>
       <CityReport></CityReport>
-      <China></China>
+      <China color="#f8f9fa"></China>
     </div>
   </div>
 </template>

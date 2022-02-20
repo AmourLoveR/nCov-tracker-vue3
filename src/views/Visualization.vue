@@ -4,18 +4,30 @@
       <n-button color="#6BB2A0" @click="enterfullscreen">全屏</n-button>
       <n-button color="#2C6975" @click="exitfullscreen">退出全屏</n-button>
     </div>
+    <div class="china-hover">
+      <China ref="chinaChart"></China>
+    </div>
   </div>
 </template>
 
 <script>
+import { ref } from "vue";
+import China from "../components/chart/China.vue";
 export default {
   name: "Visualization",
-  components: {},
+  components: { China },
   setup() {
+    const chinaChart = ref(null);
+
+    window.onresize = () => {
+      chinaChart.value.chartResize();
+      console.log('onresize');
+    }
+
     //控制全屏
     function enterfullscreen() {
       //进入全屏
-      var docElm = document.getElementById("visualization"); // 指定容器id
+      const docElm = document.getElementById("visualization"); // 指定容器id
       //W3C
       if (docElm.requestFullscreen) {
         docElm.requestFullscreen();
@@ -47,6 +59,7 @@ export default {
     }
 
     return {
+      chinaChart,
       enterfullscreen,
       exitfullscreen,
     };
@@ -57,7 +70,6 @@ export default {
 <style lang="scss" scoped>
 #visualization {
   background-color: #010101;
-  height: calc(100vh - 60px);
 
   .actions {
     display: flex;
@@ -66,7 +78,13 @@ export default {
 
     .n-button {
       margin: 1rem;
+      z-index: 99;
     }
+  }
+
+  .china-hover {
+    width: 50%;
+    margin: 0 auto;
   }
 }
 </style>

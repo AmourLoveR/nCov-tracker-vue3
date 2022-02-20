@@ -1,9 +1,9 @@
 <template>
-  <div id="china"></div>
+  <div id="china" :style="{ 'background-color': color }"></div>
 </template>
 
 <script>
-import { onMounted } from "vue";
+import { onMounted, toRefs } from "vue";
 import { useMessage } from "naive-ui";
 import * as echarts from "echarts";
 import china from "../../assets/json/china.json";
@@ -11,8 +11,15 @@ import { getProvience } from "../../api/china";
 
 export default {
   name: "China",
-  setup() {
+  props: ["color"],
+  setup(props) {
     const message = useMessage();
+    let chinaChart = undefined
+
+    function chartResize() {
+      console.log('resize');
+      chinaChart.resize()
+    }
     onMounted(async () => {
       let provinceData = [];
       const provinceRes = await getProvience("now");
@@ -21,7 +28,7 @@ export default {
         provinceData.push(province);
       }
 
-      const chinaChart = echarts.init(document.getElementById("china"));
+      chinaChart = echarts.init(document.getElementById("china"));
       echarts.registerMap("china", china);
       // 绘制图表
       chinaChart.setOption({
@@ -57,8 +64,6 @@ export default {
               min: 0.5,
               max: 10,
             },
-            center: [106, 26],
-            layoutCenter: ["100%", "100%"],
             label: {
               show: true,
             },
@@ -85,10 +90,15 @@ export default {
         ],
       });
       chinaChart.on("click", function (params) {
-        console.log(params); //此处写点击事件内容
+        console.log(params);
         message.info(params.data.name);
       });
     });
+
+    return {
+      ...toRefs(props),
+      chartResize
+    };
   },
 };
 </script>
@@ -98,7 +108,7 @@ export default {
   margin: 0 auto;
   width: 100%;
   height: calc(100vh - 60px);
-  background-color: #f8f9fa;
+  // background-color: #f8f9fa;
   box-sizing: border-box;
 }
 </style>
