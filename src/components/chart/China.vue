@@ -11,13 +11,12 @@ import { getProvience } from "../../api/china";
 
 export default {
   name: "China",
-  props: ["color"],
+  props: ["color", "zoom"],
   setup(props) {
     const message = useMessage();
     let chinaChart = undefined
 
     function chartResize() {
-      console.log('resize');
       chinaChart.resize()
     }
     onMounted(async () => {
@@ -59,11 +58,13 @@ export default {
             name: "china",
             type: "map",
             map: "china",
-            roam: true,
-            scaleLimit: {
-              min: 0.5,
-              max: 10,
-            },
+            // roam: true,
+            // scaleLimit: {
+            //   min: 0.5,
+            //   max: 10,
+            // },
+            center: [105, 35],
+            zoom: props.zoom,
             label: {
               show: true,
             },
@@ -105,10 +106,7 @@ export default {
 
 <style lang="scss" scoped>
 #china {
-  margin: 0 auto;
   width: 100%;
-  height: calc(100vh - 60px);
-  // background-color: #f8f9fa;
-  box-sizing: border-box;
+  height: 100%;
 }
 </style>

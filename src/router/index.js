@@ -1,24 +1,29 @@
-import { createRouter, createWebHashHistory } from 'vue-router'
+import {
+  createRouter,
+  createWebHashHistory
+} from 'vue-router'
 import Index from '../views/Index.vue'
 
 const routes = [{
-    path: '/',
-    name: 'index',
-    component: Index,
-    children: [
-      {
-        path: 'report',
-        name: 'report',
-        component: () => import('../views/Report.vue')
-      },
-      {
+  path: '/',
+  name: 'index',
+  component: Index,
+  children: [{
+      path: 'report',
+      name: 'report',
+      component: () => import('../views/Report.vue')
+    },
+    {
       path: 'visualization',
       name: 'visualization',
       component: () => import('../views/Visualization.vue')
-    }]
-  },
-
-]
+    },
+    {
+      path: '/test',
+      component: () => import('../views/Test.vue')
+    }
+  ]
+}]
 
 const router = createRouter({
   history: createWebHashHistory(),

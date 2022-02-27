@@ -3,27 +3,26 @@
     <div class="hover">
       <Domestic></Domestic>
       <CityReport></CityReport>
-      <China color="#f8f9fa"></China>
+      <div class="china-hover">
+        <China color="#f8f9fa" :zoom="1.6"></China>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import Domestic from "../components/report/Domestic.vue"
-import CityReport from "../components/report/CityReport.vue"
+import Domestic from "../components/report/Domestic.vue";
+import CityReport from "../components/report/CityReport.vue";
 import China from "../components/chart/China.vue";
-
 
 export default {
   name: "Report",
   components: {
     China,
     Domestic,
-    CityReport
+    CityReport,
   },
-  setup() {
-
-  },
+  setup() {},
 };
 </script>
 
@@ -32,8 +31,13 @@ export default {
   background-color: #10aeb5;
 
   .hover {
-    max-width: 1000px;
+    max-width: 800px;
     margin: 0 auto;
+
+    .china-hover {
+      width: 100%;
+      height: 80vh;
+    }
   }
 }
 </style>

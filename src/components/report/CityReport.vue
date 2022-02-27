@@ -1,7 +1,7 @@
 <template>
   <div class="city-report">
     <div class="title">疫情速报</div>
-    <div class="head">
+    <div class="headr">
       <div>地区</div>
       <div>新增本土</div>
       <div>现有病例</div>
@@ -25,7 +25,7 @@ export default {
     });
 
     onBeforeMount(async () => {
-      let res = await getCity("today");
+      const res = await getCity("today");
       const data = res.data.data;
       for (let item of data) {
         if (item.today.confirm <= 0) break;
@@ -55,7 +55,7 @@ export default {
     font-weight: 700;
   }
 
-  .head {
+  .headr {
     & > div {
       display: inline-block;
       color: #555;

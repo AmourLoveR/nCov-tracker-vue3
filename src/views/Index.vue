@@ -42,7 +42,7 @@ import {
   NMenu,
   NIcon,
 } from "naive-ui";
-import { HomeOutline, SpeedometerOutline } from "@vicons/ionicons5";
+import { HomeOutline, SpeedometerOutline, DocumentTextOutline } from "@vicons/ionicons5";
 
 export default {
   components: {
@@ -92,7 +92,7 @@ export default {
       {
         label: "疫情数据报告",
         key: "/report",
-        icon: renderIcon(SpeedometerOutline),
+        icon: renderIcon(DocumentTextOutline),
       },
       {
         label: "数据大屏",
