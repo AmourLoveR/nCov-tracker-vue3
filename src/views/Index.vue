@@ -11,16 +11,19 @@
         <n-menu
           collapse-mode="width"
           :collapsed-width="64"
-          :collapsed-icon-size="22"
+          :icon-size="22"
+          :collapsed-icon-size="24"
           :options="menuOptions"
           :value="menuValue"
           @update:value="menuUpdate"
         />
       </n-layout-sider>
       <n-layout>
-        <n-layout-header><div class="layout-header">
+        <n-layout-header
+          ><div class="layout-header">
             {{ menuValue === "/" ? "首页" : "疫情数据报告" }}
-          </div></n-layout-header>
+          </div></n-layout-header
+        >
         <n-layout-content content-style="padding: 0;">
           <router-view></router-view>
         </n-layout-content>
@@ -42,7 +45,11 @@ import {
   NMenu,
   NIcon,
 } from "naive-ui";
-import { HomeOutline, SpeedometerOutline, DocumentTextOutline } from "@vicons/ionicons5";
+import {
+  HomeOutline,
+  SpeedometerOutline,
+  DocumentTextOutline,
+} from "@vicons/ionicons5";
 
 export default {
   components: {
@@ -61,6 +68,7 @@ export default {
      */
     const themeOverrides = {
       Menu: {
+        fontSize: '1rem',
         itemTextColor: "#BBB",
         itemIconColor: "#BBB",
         itemTextColorHover: "#FFF",
@@ -69,11 +77,12 @@ export default {
         itemIconColorActive: "#FFF",
         itemColorActive: "#2d8cf0",
         itemIconColorCollapsed: "#BBB",
-        itemColorActiveCollapsed: "#2d8cf0"
+        itemColorActiveCollapsed: "#2d8cf0",
       },
     };
 
     let menuValue = ref("index");
+    let collapsed = ref(false);
     const route = useRoute();
     const router = useRouter();
 
@@ -102,7 +111,6 @@ export default {
     ];
 
     function menuUpdate(key, item) {
-      console.log(item);
       router.push(key);
       menuValue.value = key;
     }
@@ -111,7 +119,8 @@ export default {
       menuUpdate,
       menuValue,
       menuOptions,
-      themeOverrides
+      themeOverrides,
+      collapsed,
     };
   },
 };
@@ -123,7 +132,7 @@ export default {
   height: 60px;
   line-height: 60px;
   color: #10aeb5;
-  font-size: 18px;
+  font-size: 1rem;
   position: relative;
   z-index: 99;
 
@@ -142,5 +151,6 @@ export default {
 .n-layout-content {
   background: #f5f7f9;
   min-height: calc(100vh - 60px);
+  font-size: 1rem;
 }
 </style>

@@ -7,7 +7,7 @@ import { onMounted, toRefs } from "vue";
 import { useMessage } from "naive-ui";
 import * as echarts from "echarts";
 import china from "../../assets/json/china.json";
-import { getProvience } from "../../api/china";
+import { getProvince } from "../../api/china";
 
 export default {
   name: "China",
@@ -21,7 +21,7 @@ export default {
     }
     onMounted(async () => {
       let provinceData = [];
-      const provinceRes = await getProvience("now");
+      const provinceRes = await getProvince("now");
       for (let item of provinceRes.data.data) {
         const province = { name: item.name, value: item.total.nowConfirm };
         provinceData.push(province);

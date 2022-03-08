@@ -1,20 +1,31 @@
 <template>
   <div id="visualization">
     <div class="header">
-      <div style="margin: 0 auto">疫情实时数据</div>
-      <n-button text color="#6BB2A0" @click="enterfullscreen">
-        <template #icon>
-          <n-icon>
-            <Scan />
-          </n-icon>
-        </template>
-      </n-button>
-      <n-button color="#2C6975" @click="exitfullscreen">退出全屏</n-button>
+      <div>
+        <div class="now-date">
+          <div class="time">{{ time }}</div>
+          <div class="date">
+            <div>{{ week }}</div>
+            <div>{{ date }}</div>
+          </div>
+        </div>
+      </div>
+      <div class="title">疫情实时数据</div>
+      <div class="actions">
+        <n-button text color="#6BB2A0" @click="enterfullscreen">
+          <template #icon>
+            <n-icon>
+              <Scan />
+            </n-icon>
+          </template>
+        </n-button>
+        <n-button color="#2C6975" @click="exitfullscreen">退出全屏</n-button>
+      </div>
     </div>
     <div class="content">
       <div>
         <div class="local-confirm">
-          <div class="item-title">本土新增</div>
+          <div class="item-title">本土新增（城市）</div>
           <div class="local-confirm-header">
             <div>地区</div>
             <div>新增本土</div>
@@ -33,14 +44,44 @@
         <div class="growth-trend">
           <div class="item-title">增长趋势统计</div>
           <div class="trend-hover">
-            <GrowthTrend></GrowthTrend>
+            <GrowthTrend ref="trendRef"></GrowthTrend>
           </div>
         </div>
       </div>
-      <div class="china-hover">
-        <China ref="chinaRef" :zoom="1.2"></China>
+      <div>
+        <div class="china-data">
+          <div>
+            <span class="name">本土新增</span
+            ><span class="data">{{ chinaData.todayConfirm }}</span>
+          </div>
+          <div>
+            <span class="name">现有确诊</span
+            ><span class="data">{{ chinaData.nowConfirm }}</span>
+          </div>
+        </div>
+        <div class="china-hover">
+          <China ref="chinaRef" :zoom="1.2"></China>
+        </div>
       </div>
-      <div></div>
+      <div>
+        <div class="local-confirm">
+          <div class="item-title">本土新增（省）</div>
+          <div class="local-confirm-header">
+            <div>地区</div>
+            <div>新增本土</div>
+            <div>现有病例</div>
+          </div>
+          <div
+            v-for="item in provinceData.slice(0, 4)"
+            :key="item.name"
+            class="city-increase"
+          >
+            <div>{{ item.name }}</div>
+            <div>{{ item.todayConfirm }}</div>
+            <div>{{ item.nowConfirm }}</div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -48,22 +89,76 @@
 <script>
 import { ref, reactive, toRefs, onBeforeMount } from "vue";
 import { Scan } from "@vicons/ionicons5";
-import { getChina, getCity } from "../api/china";
+import { getChina, getCity, getProvince } from "../api/china";
 import China from "../components/chart/China.vue";
 import GrowthTrend from "../components/visualization/GrowthTrend.vue";
+import { formatDate } from "../utils/utils";
 
 export default {
   name: "Visualization",
   components: { China, Scan, GrowthTrend },
   setup() {
+    // 风险地区、疫情新增人员比例（境外输入，无症状，本土...）
     const state = reactive({
       chinaData: {},
+      provinceData: [],
       cityData: [],
     });
     const chinaRef = ref(null);
+    const trendRef = ref(null);
+    const date = reactive({
+      date: formatDate(new Date(), "YYYY.MM.DD"),
+      time: formatDate(new Date(), "HH:mm:ss"),
+      week: formatDate(new Date(), "week"),
+    });
+    window.setInterval(() => {
+      date.time = formatDate(new Date(), "HH:mm:ss");
+    }, 1000);
 
     window.onresize = () => {
       chinaRef.value.chartResize();
+      trendRef.value.chartResize();
+    };
+
+    onBeforeMount(async () => {
+      const chinaRes = await getChina();
+      state.chinaData = chinaRes.data.data;
+      state.chinaData = {
+        todayConfirm:
+          state.chinaData?.chinaAdd?.localConfirmH5.toLocaleString(),
+        nowConfirm: state.chinaData?.chinaTotal?.localConfirm.toLocaleString(),
+      };
+
+      const provinceRes = await getProvince("today");
+      for (let item of provinceRes.data.data) {
+        const province = {
+          name: item.name,
+          todayConfirm: item.today.confirm.toLocaleString(),
+          nowConfirm: item.total.nowConfirm.toLocaleString(),
+        };
+        state.provinceData.push(province);
+      }
+
+      const cityRes = await getCity("today");
+      const data = cityRes.data.data;
+      for (let item of data) {
+        if (item.today.confirm <= 0) break;
+        let city = {
+          name: item.name,
+          todayConfirm: item.today.confirm.toLocaleString(),
+          nowConfirm: item.total.nowConfirm.toLocaleString(),
+        };
+        state.cityData.push(city);
+      }
+    });
+
+    return {
+      ...toRefs(state),
+      ...toRefs(date),
+      chinaRef,
+      trendRef,
+      enterfullscreen,
+      exitfullscreen,
     };
 
     //控制全屏
@@ -99,57 +194,67 @@ export default {
         document.msExitFullscreen();
       }
     }
-
-    onBeforeMount(async () => {
-      const chinaRes = await getChina();
-      state.chinaData = chinaRes.data.data;
-
-      state.cityData.push({
-        name: "全国",
-        todayConfirm: state.chinaData?.chinaAdd?.localConfirmH5,
-        nowConfirm: state.chinaData?.chinaTotal?.localConfirm,
-      });
-
-      const cityRes = await getCity("today");
-      const data = cityRes.data.data;
-      for (let item of data) {
-        if (item.today.confirm <= 0) break;
-        let city = {
-          name: item.name,
-          todayConfirm: item.today.confirm,
-          nowConfirm: item.total.nowConfirm,
-        };
-        state.cityData.push(city);
-      }
-    });
-
-    return {
-      ...toRefs(state),
-      chinaRef,
-      enterfullscreen,
-      exitfullscreen,
-    };
   },
 };
 </script>
 
 <style lang="scss" scoped>
 #visualization {
-  background-color: #010101;
   width: 100%;
   min-height: 100vh;
   height: 100vh;
+  background-color: #010101;
+  background: url("../assets/imgs/background.jpeg") no-repeat;
+  background-size: 100% 100%;
 
   .header {
+    display: table;
+    width: 100%;
     height: 60px;
-    display: flex;
-    justify-content: flex-end;
-    padding: 0 2rem;
-    border-bottom: 1px #fff solid;
 
-    .n-button {
-      margin: 1rem;
-      z-index: 99;
+    .now-date {
+      color: #fff;
+      display: flex;
+      padding-left: 0.8rem;
+
+      .time {
+        font-size: 1.5rem;
+        letter-spacing: 0.1rem;
+      }
+
+      .date {
+        margin-left: 5px;
+
+        & > div {
+          margin-bottom: -5px;
+          font-size: 12px;
+        }
+      }
+    }
+
+    & > div {
+      display: table-cell;
+      height: 60px;
+      vertical-align: middle;
+
+      &:not(:nth-child(2)) {
+        width: 33%;
+      }
+    }
+
+    .title {
+      text-align: center;
+      color: #eaedf4;
+      font-size: 1.5rem;
+      letter-spacing: 0.1rem;
+    }
+
+    .actions {
+      text-align: end;
+
+      .n-button {
+        margin: 0 1rem;
+      }
     }
   }
 
@@ -162,6 +267,10 @@ export default {
       display: table-cell;
       vertical-align: top;
 
+      &:nth-child(2) {
+        width: 40%;
+      }
+
       &:not(:nth-child(2)) {
         width: 30%;
       }
@@ -169,7 +278,8 @@ export default {
 
     .local-confirm {
       color: #fff;
-      padding: 0.8rem;
+      padding: 0 0.8rem;
+      height: 30%;
 
       .local-confirm-header {
         & > div {
@@ -218,7 +328,7 @@ export default {
           &:not(:nth-child(1)) {
             width: 27%;
             text-align: center;
-            color: #f4ba94;
+            color: #ffae00;
           }
         }
       }
@@ -233,10 +343,32 @@ export default {
       }
     }
 
+    .china-data {
+      width: 100%;
+      height: 20%;
+      padding: 0 5rem;
+
+      & > div {
+        width: 50%;
+        margin-top: 50px;
+        display: inline-block;
+        text-align: center;
+
+        .name {
+          display: block;
+          color: #fff;
+        }
+
+        .data {
+          color: #ffae00;
+          font-size: 1.5rem;
+        }
+      }
+    }
+
     .china-hover {
-      width: 40%;
-      border-left: 1px white solid;
-      border-right: 1px white solid;
+      width: 100%;
+      height: 80%;
     }
 
     .item-title {

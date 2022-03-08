@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import { onBeforeMount, onMounted } from "vue";
+import { onMounted } from "vue";
 import * as echarts from "echarts";
 import { getChina } from "../../api/china";
 import { formatDate } from "../../utils/utils";
@@ -14,21 +14,23 @@ export default {
     let chinaDayList = JSON.parse(localStorage.getItem("chinaDayList")) || [];
     const length = chinaDayList.length;
 
-    onBeforeMount(async () => {
+    function chartResize() {
+      chart.resize();
+    }
+
+    onMounted(async () => {
       const chinaRes = await getChina();
       const data = chinaRes.data.data;
       const item = {
-        date: formatDate(new Date()),
+        date: formatDate(new Date(), 'YYYY-MM-DD'),
         localConfirm: data.chinaAdd.localConfirmH5,
         localConfirmTotal: data.chinaTotal.localConfirm,
       };
-      if (chinaDayList[length - 1].date === formatDate(new Date()))
+      if (length !== 0 && chinaDayList[length - 1]?.date === formatDate(new Date(), 'YYYY-MM-DD'))
         chinaDayList.pop();
       chinaDayList.push(item);
       localStorage.setItem("chinaDayList", JSON.stringify(chinaDayList));
-    });
 
-    onMounted(() => {
       const dates = [];
       const localConfirms = [];
       const localConfirmTotals = [];
@@ -106,6 +108,10 @@ export default {
         ],
       });
     });
+
+    return {
+      chartResize,
+    };
   },
 };
 </script>

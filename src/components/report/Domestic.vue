@@ -2,53 +2,11 @@
   <div class="domestic">
     <div class="title">国内疫情</div>
     <div class="content">
-      <div>
-        <span class="name">本土现有确诊</span>
-        <span class="main-data" :style="{'color': '#e57631'}">{{ chinaData?.chinaTotal?.localConfirm }}</span>
+      <div v-for="item in chinaData" :key="item.name">
+        <span class="name">{{ item.name }}</span>
+        <span class="main-data" :style="{ color: item.color }">{{ item.mainData }}</span>
         <span class="previous-day">较上日</span>
-        <span class="previous-data" :style="{'color': '#e57631'}">{{ chinaData?.chinaAdd?.localConfirmH5 >=0 ? `+${chinaData?.chinaAdd?.localConfirmH5}` : `${chinaData?.chinaAdd?.localConfirmH5}` }}</span>
-      </div>
-      <div>
-        <span class="name">现有确诊</span>
-        <span class="main-data" :style="{'color': '#ff6a57'}">{{ chinaData?.chinaTotal?.nowConfirm }}</span>
-        <span class="previous-day">较上日</span>
-        <span class="previous-data" :style="{'color': '#ff6a57'}">{{ chinaData?.chinaAdd?.nowConfirm >=0 ? `+${chinaData?.chinaAdd?.nowConfirm}` : `${chinaData?.chinaAdd?.nowConfirm}`}}</span>
-      </div>
-      <div>
-        <span class="name">累计确诊</span>
-        <span class="main-data" :style="{'color': '#e83132'}">{{ chinaData?.chinaTotal?.confirm }}</span>
-        <span class="previous-day">较上日</span>
-        <span class="previous-data" :style="{'color': '#e83132'}">{{ chinaData?.chinaAdd?.confirm >= 0? `+${chinaData?.chinaAdd?.confirm}` : `${chinaData?.chinaAdd?.confirm}` }}</span>
-      </div>
-      <div>
-        <span class="name">现有重症</span>
-        <span class="main-data" :style="{'color': '#545499'}">{{ chinaData?.chinaTotal?.nowSevere }}</span>
-        <span class="previous-day">较上日</span>
-        <span class="previous-data" :style="{'color': '#545499'}">{{ chinaData?.chinaAdd?.nowSevere >= 0? `+${chinaData?.chinaAdd?.nowSevere}` : `${chinaData?.chinaAdd?.nowSevere}` }}</span>
-      </div>
-      <div>
-        <span class="name">无症状</span>
-        <span class="main-data" :style="{'color': '#f86d48'}">{{ chinaData?.chinaTotal?.noInfect }}</span>
-        <span class="previous-day">较上日</span>
-        <span class="previous-data" :style="{'color': '#f86d48'}">{{ chinaData?.chinaAdd?.noInfect >= 0? `+${chinaData?.chinaAdd?.noInfect}` : `${chinaData?.chinaAdd?.noInfect}` }}</span>
-      </div>
-      <div>
-        <span class="name">境外输入</span>
-        <span class="main-data" :style="{'color': '#476da0'}">{{ chinaData?.chinaTotal?.importedCase }}</span>
-        <span class="previous-day">较上日</span>
-        <span class="previous-data" :style="{'color': '#476da0'}">{{ chinaData?.chinaAdd?.importedCase >= 0? `+${chinaData?.chinaAdd?.importedCase}` : `${chinaData?.chinaAdd?.importedCase}` }}</span>
-      </div>
-      <div>
-        <span class="name">累计治愈</span>
-        <span class="main-data" :style="{'color': '#10aeb5'}">{{ chinaData?.chinaTotal?.heal }}</span>
-        <span class="previous-day">较上日</span>
-        <span class="previous-data" :style="{'color': '#10aeb5'}">{{ chinaData?.chinaAdd?.heal >= 0? `+${chinaData?.chinaAdd?.heal}` : `${chinaData?.chinaAdd?.heal}` }}</span>
-      </div>
-      <div>
-        <span class="name">累计死亡</span>
-        <span class="main-data" :style="{'color': '#4d5054'}">{{ chinaData?.chinaTotal?.dead }}</span>
-        <span class="previous-day">较上日</span>
-        <span class="previous-data" :style="{'color': '#4d5054'}">{{ chinaData?.chinaAdd?.dead >= 0? `+${chinaData?.chinaAdd?.dead}` : `${chinaData?.chinaAdd?.dead}` }}</span>
+        <span class="previous-data" :style="{ color: item.color }">{{ item.previousData }}</span>
       </div>
     </div>
   </div>
@@ -56,23 +14,97 @@
 
 <script>
 import { reactive, onBeforeMount, toRefs } from "vue";
-import { getChina } from "../../api/china"
+import { getChina } from "../../api/china";
 export default {
   setup() {
     const state = reactive({
-      chinaData: {}
+      chinaData: [],
     });
 
     onBeforeMount(async () => {
       const res = await getChina();
-      state.chinaData = res.data.data
+      const data = res.data.data;
+      state.chinaData = [
+        {
+          name: "本土现有确诊",
+          mainData: data.chinaTotal?.localConfirm.toLocaleString(),
+          previousData:
+            data.chinaAdd?.localConfirmH5 >= 0
+              ? `+${data?.chinaAdd?.localConfirmH5.toLocaleString()}`
+              : data?.chinaAdd?.localConfirmH5.toLocaleString(),
+          color: "#e57631",
+        },
+        {
+          name: "现有确诊",
+          mainData: data.chinaTotal?.nowConfirm.toLocaleString(),
+          previousData:
+            data.chinaAdd?.nowConfirm >= 0
+              ? `+${data?.chinaAdd?.nowConfirm.toLocaleString()}`
+              : data?.chinaAdd?.nowConfirm.toLocaleString(),
+          color: "#ff6a57",
+        },
+        {
+          name: "累计确诊",
+          mainData: data?.chinaTotal?.confirm.toLocaleString(),
+          previousData:
+            data?.chinaAdd?.confirm >= 0
+              ? `+${data?.chinaAdd?.confirm.toLocaleString()}`
+              : data?.chinaAdd?.confirm.toLocaleString(),
+          color: "#e83132",
+        },
+        {
+          name: "现有重症",
+          mainData: data?.chinaTotal?.nowSevere.toLocaleString(),
+          previousData:
+            data?.chinaAdd?.nowSevere >= 0
+              ? `+${data?.chinaAdd?.nowSevere.toLocaleString()}`
+              : data?.chinaAdd?.nowSevere.toLocaleString(),
+          color: "#545499",
+        },
+        {
+          name: "无症状",
+          mainData: data?.chinaTotal?.noInfect.toLocaleString(),
+          previousData:
+            data?.chinaAdd?.noInfect >= 0
+              ? `+${data?.chinaAdd?.noInfect.toLocaleString()}`
+              : data?.chinaAdd?.noInfect.toLocaleString(),
+          color: "#f86d48",
+        },
+        {
+          name: "境外输入",
+          mainData: data?.chinaTotal?.importedCase.toLocaleString(),
+          previousData:
+            data?.chinaAdd?.importedCase >= 0
+              ? `+${data?.chinaAdd?.importedCase.toLocaleString()}`
+              : data?.chinaAdd?.importedCase.toLocaleString(),
+          color: "#476da0",
+        },
+        {
+          name: "累计治愈",
+          mainData: data?.chinaTotal?.heal.toLocaleString(),
+          previousData:
+            data?.chinaAdd?.heal >= 0
+              ? `+${data?.chinaAdd?.heal.toLocaleString()}`
+              : data?.chinaAdd?.heal.toLocaleString(),
+          color: "#10aeb5",
+        },
+        {
+          name: "累计死亡",
+          mainData: data?.chinaTotal?.dead.toLocaleString(),
+          previousData:
+            data?.chinaAdd?.dead >= 0
+              ? `+${data?.chinaAdd?.dead.toLocaleString()}`
+              : data?.chinaAdd?.dead.toLocaleString(),
+          color: "#4d5054",
+        },
+      ];
     });
 
     return {
-      ...toRefs(state)
+      ...toRefs(state),
     };
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>
@@ -90,10 +122,10 @@ export default {
     display: flex;
     flex-wrap: wrap;
 
-    &>div {
+    & > div {
       width: 25%;
       text-align: center;
-      
+
       .name {
         font-size: 16px;
         display: block;
@@ -106,12 +138,12 @@ export default {
       }
 
       .previous-day {
-        font-size: .8125rem;
+        font-size: 0.8125rem;
         color: #999;
       }
 
       .previous-data {
-        font-size: .8125rem;
+        font-size: 0.8125rem;
       }
     }
   }
