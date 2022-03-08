@@ -8,7 +8,7 @@ import * as echarts from "echarts";
 import { getChina } from "../../api/china";
 import { formatDate } from "../../utils/utils";
 export default {
-  name: "App",
+  name: "growthTrend",
   setup() {
     let chart = undefined;
     let chinaDayList = JSON.parse(localStorage.getItem("chinaDayList")) || [];

@@ -4,7 +4,7 @@
       <Domestic></Domestic>
       <CityReport></CityReport>
       <div class="china-hover">
-        <China color="#f8f9fa" :zoom="1.6"></China>
+        <China color="#f8f9fa" :zoom="1.4"></China>
       </div>
     </div>
   </div>

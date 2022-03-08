@@ -81,6 +81,10 @@
             <div>{{ item.nowConfirm }}</div>
           </div>
         </div>
+        <div class="proportion-hover">
+          <div class="item-title">新增确诊病例分布</div>
+          <IncreasedProportion></IncreasedProportion>
+        </div>
       </div>
     </div>
   </div>
@@ -90,13 +94,14 @@
 import { ref, reactive, toRefs, onBeforeMount } from "vue";
 import { Scan } from "@vicons/ionicons5";
 import { getChina, getCity, getProvince } from "../api/china";
+import { formatDate } from "../utils/utils";
 import China from "../components/chart/China.vue";
 import GrowthTrend from "../components/visualization/GrowthTrend.vue";
-import { formatDate } from "../utils/utils";
+import IncreasedProportion from "../components/visualization/IncreasedProportion.vue";
 
 export default {
   name: "Visualization",
-  components: { China, Scan, GrowthTrend },
+  components: { China, Scan, GrowthTrend, IncreasedProportion },
   setup() {
     // 风险地区、疫情新增人员比例（境外输入，无症状，本土...）
     const state = reactive({
@@ -279,7 +284,7 @@ export default {
     .local-confirm {
       color: #fff;
       padding: 0 0.8rem;
-      height: 30%;
+      height: 33%;
 
       .local-confirm-header {
         & > div {
@@ -337,6 +342,7 @@ export default {
     .growth-trend {
       width: 100%;
       height: 40%;
+      padding-left: 0.8rem;
 
       .trend-hover {
         height: calc(100% - 50px);
@@ -371,13 +377,19 @@ export default {
       height: 80%;
     }
 
+    .proportion-hover {
+      width: 100%;
+      height: 40%;
+      padding-left: 0.8rem;
+    }
+
     .item-title {
       height: 50px;
-      padding: 0.5rem;
+      padding-left: 0.5rem;
       color: #77b0cb;
       font-weight: 700;
       border-radius: 0.25rem;
-      font-size: 1.2rem;
+      font-size: 1.3rem;
     }
   }
 }
