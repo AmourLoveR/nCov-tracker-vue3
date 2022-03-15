@@ -91,7 +91,7 @@
 </template>
 
 <script>
-import { ref, reactive, toRefs, onBeforeMount } from "vue";
+import { ref, reactive, toRefs, onBeforeMount, onBeforeUnmount } from "vue";
 import { Scan } from "@vicons/ionicons5";
 import { getChina, getCity, getProvince } from "../api/china";
 import { formatDate } from "../utils/utils";
@@ -157,6 +157,10 @@ export default {
       }
     });
 
+    onBeforeUnmount(() => {
+      window.onresize = null
+    })
+
     return {
       ...toRefs(state),
       ...toRefs(date),
@@ -210,7 +214,7 @@ export default {
   height: 100vh;
   background-color: #010101;
   background: url("../assets/imgs/background.jpeg") no-repeat;
-  background-size: 100% 100%;
+  background-size: cover;
 
   .header {
     display: table;

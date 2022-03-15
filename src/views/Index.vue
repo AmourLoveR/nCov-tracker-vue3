@@ -68,7 +68,7 @@ export default {
      */
     const themeOverrides = {
       Menu: {
-        fontSize: '1rem',
+        // fontSize: '1rem',
         itemTextColor: "#BBB",
         itemIconColor: "#BBB",
         itemTextColorHover: "#FFF",
@@ -132,7 +132,7 @@ export default {
   height: 60px;
   line-height: 60px;
   color: #10aeb5;
-  font-size: 1rem;
+  // font-size: 1rem;
   position: relative;
   z-index: 99;
 
@@ -151,6 +151,6 @@ export default {
 .n-layout-content {
   background: #f5f7f9;
   min-height: calc(100vh - 60px);
-  font-size: 1rem;
+  // font-size: 1rem;
 }
 </style>

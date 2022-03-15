@@ -4,7 +4,7 @@ const service = axios.create({
     baseURL: 'http://myhost.fallen-angle.com:8081/api/v1/',
     timeout: 10000,
     headers: {
-        "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8"
+        "Content-Type": "application/json;charset=UTF-8"
      },
 })
 
