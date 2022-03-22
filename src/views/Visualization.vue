@@ -12,14 +12,14 @@
       </div>
       <div class="title">疫情实时数据</div>
       <div class="actions">
-        <n-button text color="#6BB2A0" @click="enterfullscreen">
+        <n-button text color="#6BB2A0" title="全屏" @click="enterfullscreen">
           <template #icon>
             <n-icon>
               <Scan />
             </n-icon>
           </template>
         </n-button>
-        <n-button color="#2C6975" @click="exitfullscreen">退出全屏</n-button>
+        <!-- <n-button color="#2C6975" @click="exitfullscreen">退出全屏</n-button> -->
       </div>
     </div>
     <div class="content">
@@ -44,7 +44,7 @@
         <div class="growth-trend">
           <div class="item-title">增长趋势统计</div>
           <div class="trend-hover">
-            <GrowthTrend ref="trendRef"></GrowthTrend>
+            <GrowthTrend ref="trendRef" :chinaRes="chinaRes"></GrowthTrend>
           </div>
         </div>
       </div>
@@ -60,7 +60,7 @@
           </div>
         </div>
         <div class="china-hover">
-          <China ref="chinaRef" :zoom="1.2"></China>
+          <China ref="chinaRef" :zoom="1.2" :provinceRes="provinceRes"></China>
         </div>
       </div>
       <div>
@@ -83,7 +83,7 @@
         </div>
         <div class="proportion-hover">
           <div class="item-title">新增确诊病例分布</div>
-          <IncreasedProportion></IncreasedProportion>
+          <IncreasedProportion :chinaRes="chinaRes"></IncreasedProportion>
         </div>
       </div>
     </div>
@@ -93,7 +93,7 @@
 <script>
 import { ref, reactive, toRefs, onBeforeMount, onBeforeUnmount } from "vue";
 import { Scan } from "@vicons/ionicons5";
-import { getChina, getCity, getProvince } from "../api/china";
+import { getChina, getCity, getProvince } from "../api/statistics";
 import { formatDate } from "../utils/utils";
 import China from "../components/chart/China.vue";
 import GrowthTrend from "../components/visualization/GrowthTrend.vue";
@@ -103,9 +103,10 @@ export default {
   name: "Visualization",
   components: { China, Scan, GrowthTrend, IncreasedProportion },
   setup() {
-    // 风险地区、疫情新增人员比例（境外输入，无症状，本土...）
     const state = reactive({
+      chinaRes: {},
       chinaData: {},
+      provinceRes: {},
       provinceData: [],
       cityData: [],
     });
@@ -126,16 +127,16 @@ export default {
     };
 
     onBeforeMount(async () => {
-      const chinaRes = await getChina();
-      state.chinaData = chinaRes.data.data;
+      state.chinaRes = await getChina();
+      state.chinaData = state.chinaRes.data.data;
       state.chinaData = {
         todayConfirm:
           state.chinaData?.chinaAdd?.localConfirmH5.toLocaleString(),
         nowConfirm: state.chinaData?.chinaTotal?.localConfirm.toLocaleString(),
       };
 
-      const provinceRes = await getProvince("today");
-      for (let item of provinceRes.data.data) {
+      state.provinceRes = await getProvince("today");
+      for (let item of state.provinceRes.data.data) {
         const province = {
           name: item.name,
           todayConfirm: item.today.confirm.toLocaleString(),
@@ -393,7 +394,7 @@ export default {
       color: #77b0cb;
       font-weight: 700;
       border-radius: 0.25rem;
-      font-size: 1.3rem;
+      font-size: 1.2rem;
     }
   }
 }

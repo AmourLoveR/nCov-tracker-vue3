@@ -3,13 +3,13 @@
 </template>
 
 <script>
-import { onMounted } from "vue";
+import { watch } from "vue";
 import * as echarts from "echarts";
-import { getChina } from "../../api/china";
 import { formatDate } from "../../utils/utils";
 export default {
   name: "growthTrend",
-  setup() {
+  props: ["chinaRes"],
+  setup(props) {
     let chart = undefined;
     let chinaDayList = JSON.parse(localStorage.getItem("chinaDayList")) || [];
     const length = chinaDayList.length;
@@ -18,15 +18,17 @@ export default {
       chart.resize();
     }
 
-    onMounted(async () => {
-      const chinaRes = await getChina();
-      const data = chinaRes.data.data;
+    function setChart() {
+      const data = props.chinaRes.data.data;
       const item = {
-        date: formatDate(new Date(), 'YYYY-MM-DD'),
+        date: formatDate(new Date(), "YYYY-MM-DD"),
         localConfirm: data.chinaAdd.localConfirmH5,
         localConfirmTotal: data.chinaTotal.localConfirm,
       };
-      if (length !== 0 && chinaDayList[length - 1]?.date === formatDate(new Date(), 'YYYY-MM-DD'))
+      if (
+        length !== 0 &&
+        chinaDayList[length - 1]?.date === formatDate(new Date(), "YYYY-MM-DD")
+      )
         chinaDayList.pop();
       chinaDayList.push(item);
       localStorage.setItem("chinaDayList", JSON.stringify(chinaDayList));
@@ -107,7 +109,17 @@ export default {
           },
         ],
       });
-    });
+    }
+
+    watch(
+      () => props.chinaRes,
+      (val, oldVal) => {
+        if (val.data.data) {
+          setChart();
+        }
+      },
+      { immediate: false }
+    );
 
     return {
       chartResize,

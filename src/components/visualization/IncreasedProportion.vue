@@ -3,22 +3,20 @@
 </template>
 
 <script>
-import { onMounted } from "vue";
+import { watch } from "vue";
 import * as echarts from "echarts";
-import { getChina } from "../../api/china";
-import { formatDate } from "../../utils/utils";
 export default {
   name: "IncreasedProportion",
-  setup() {
+  props: ["chinaRes"],
+  setup(props) {
     let chart = undefined;
 
     function chartResize() {
       chart.resize();
     }
 
-    onMounted(async () => {
-      const chinaRes = await getChina();
-      const data = chinaRes.data.data;
+    function setChart() {
+      const data = props.chinaRes.data.data;
 
       chart = echarts.init(document.getElementById("increasedProportion"));
       chart.setOption({
@@ -48,7 +46,17 @@ export default {
           },
         ],
       });
-    });
+    }
+
+    watch(
+      () => props.chinaRes,
+      (val, oldVal) => {
+        if (val.data.data) {
+          setChart();
+        }
+      },
+      { immediate: false }
+    );
 
     return {
       chartResize,

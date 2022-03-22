@@ -7,3 +7,12 @@ export function userRegister(data) {
         data
     })
 }
+
+export function userLogin(data) {
+    return service.request({
+        method: 'post',
+        url: '/user/login',
+        data
+    })
+}
+

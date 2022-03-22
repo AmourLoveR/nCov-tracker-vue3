@@ -4,16 +4,18 @@
       <Domestic></Domestic>
       <CityReport></CityReport>
       <div class="china-hover">
-        <China color="#f8f9fa" :zoom="1.4"></China>
+        <China color="#f8f9fa" :zoom="1.4" :provinceRes="provinceRes"></China>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import { reactive, toRefs } from "vue";
 import Domestic from "../components/report/Domestic.vue";
 import CityReport from "../components/report/CityReport.vue";
 import China from "../components/chart/China.vue";
+import { getChina, getCity, getProvince } from "../api/statistics";
 
 export default {
   name: "Report",
@@ -22,7 +24,24 @@ export default {
     Domestic,
     CityReport,
   },
-  setup() {},
+  setup() {
+    const state = reactive({
+      chinaRes: {},
+      chinaData: {},
+      provinceRes: {},
+      provinceData: [],
+      cityData: [],
+    });
+
+    async function getProvinceFunc() {
+      state.provinceRes = await getProvince("today");
+    }
+    getProvinceFunc()
+
+    return {
+      ...toRefs(state)
+    }
+  },
 };
 </script>
 

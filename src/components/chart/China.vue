@@ -3,26 +3,26 @@
 </template>
 
 <script>
-import { onMounted, toRefs } from "vue";
+import { onMounted, toRefs, watch } from "vue";
 import { useMessage } from "naive-ui";
 import * as echarts from "echarts";
 import china from "../../assets/json/china.json";
-import { getProvince } from "../../api/china";
+import { getProvince } from "../../api/statistics";
 
 export default {
   name: "China",
-  props: ["color", "zoom"],
+  props: ["color", "zoom", "provinceRes"],
   setup(props) {
     const message = useMessage();
-    let chinaChart = undefined
+    let chinaChart = undefined;
 
     function chartResize() {
-      chinaChart.resize()
+      chinaChart.resize();
     }
-    onMounted(async () => {
+
+    function setChart() {
       let provinceData = [];
-      const provinceRes = await getProvince("now");
-      for (let item of provinceRes.data.data) {
+      for (let item of props.provinceRes.data.data) {
         const province = { name: item.name, value: item.total.nowConfirm };
         provinceData.push(province);
       }
@@ -94,11 +94,20 @@ export default {
         console.log(params);
         message.info(params.data.name);
       });
-    });
+    }
+    watch(
+      () => props.provinceRes,
+      (val, oldVal) => {
+        if (val.data.data) {
+          setChart();
+        }
+      },
+      { immediate: false }
+    );
 
     return {
       ...toRefs(props),
-      chartResize
+      chartResize,
     };
   },
 };

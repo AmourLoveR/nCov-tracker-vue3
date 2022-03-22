@@ -16,7 +16,7 @@
 
 <script>
 import { onBeforeMount, reactive, toRefs } from "vue";
-import { getCity } from "../../api/china";
+import { getCity } from "../../api/statistics";
 
 export default {
   setup() {

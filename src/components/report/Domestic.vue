@@ -14,7 +14,7 @@
 
 <script>
 import { reactive, onBeforeMount, toRefs } from "vue";
-import { getChina } from "../../api/china";
+import { getChina } from "../../api/statistics";
 export default {
   setup() {
     const state = reactive({
