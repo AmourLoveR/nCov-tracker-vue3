@@ -83,7 +83,10 @@
         </div>
         <div class="proportion-hover">
           <div class="item-title">新增确诊病例分布</div>
-          <IncreasedProportion :chinaRes="chinaRes"></IncreasedProportion>
+          <IncreasedProportion
+            ref="proportionRef"
+            :chinaRes="chinaRes"
+          ></IncreasedProportion>
         </div>
       </div>
     </div>
@@ -112,6 +115,7 @@ export default {
     });
     const chinaRef = ref(null);
     const trendRef = ref(null);
+    const proportionRef = ref(null);
     const date = reactive({
       date: formatDate(new Date(), "YYYY.MM.DD"),
       time: formatDate(new Date(), "HH:mm:ss"),
@@ -124,6 +128,7 @@ export default {
     window.onresize = () => {
       chinaRef.value.chartResize();
       trendRef.value.chartResize();
+      proportionRef.value.chartResize();
     };
 
     onBeforeMount(async () => {
@@ -159,14 +164,15 @@ export default {
     });
 
     onBeforeUnmount(() => {
-      window.onresize = null
-    })
+      window.onresize = null;
+    });
 
     return {
       ...toRefs(state),
       ...toRefs(date),
       chinaRef,
       trendRef,
+      proportionRef,
       enterfullscreen,
       exitfullscreen,
     };

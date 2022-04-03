@@ -1,4 +1,4 @@
-import { createRouter, createWebHashHistory } from "vue-router";
+import { createRouter, createWebHistory, createWebHashHistory } from "vue-router";
 import Index from "../views/Index.vue";
 
 const routes = [
@@ -6,6 +6,7 @@ const routes = [
     path: "/",
     name: "index",
     component: Index,
+    redirect: '/report',
     children: [
       {
         path: "report",
@@ -18,7 +19,7 @@ const routes = [
         component: () => import("../views/Visualization.vue"),
       },
       {
-        path: "/test",
+        path: "test",
         component: () => import("../views/Test.vue"),
       },
     ],

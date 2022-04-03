@@ -6,22 +6,40 @@
       <div>新增本土</div>
       <div>现有病例</div>
     </div>
-    <div class="item" v-for="item in cityData" :key="item.name">
+    <div class="item" v-for="item in cityData.slice(0, 5)" :key="item.name">
       <div>{{ item.name }}</div>
       <div>{{ item.todayConfirm }}</div>
       <div>{{ item.nowConfirm }}</div>
+    </div>
+    <template v-if="isLoadMore">
+      <div class="item" v-for="item in cityData.slice(5)" :key="item.name">
+        <div>{{ item.name }}</div>
+        <div>{{ item.todayConfirm }}</div>
+        <div>{{ item.nowConfirm }}</div>
+      </div>
+    </template>
+    <div class="load-more" @click="isLoadMore = !isLoadMore">
+      <span>{{ !isLoadMore ? "加载更多" : "收起" }}</span>
+      <n-icon size="22">
+        <ChevronDown v-if="!isLoadMore" />
+        <ChevronUp v-else/>
+      </n-icon>
     </div>
   </div>
 </template>
 
 <script>
 import { onBeforeMount, reactive, toRefs } from "vue";
+import { ChevronDown, ChevronUp } from "@vicons/ionicons5";
 import { getCity } from "../../api/statistics";
 
 export default {
+  name: "CityReport",
+  components: { ChevronDown, ChevronUp },
   setup() {
     const state = reactive({
       cityData: [],
+      isLoadMore: false,
     });
 
     onBeforeMount(async () => {
@@ -123,6 +141,16 @@ export default {
       -ms-transform: scaleY(0.3);
       transform: scaleY(0.3);
     }
+  }
+
+  .load-more {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 2rem;
+    cursor: pointer;
+    font-size: 16px;
+    color: #555;
   }
 }
 </style>

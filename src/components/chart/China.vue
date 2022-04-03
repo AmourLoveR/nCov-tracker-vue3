@@ -7,7 +7,6 @@ import { onMounted, toRefs, watch } from "vue";
 import { useMessage } from "naive-ui";
 import * as echarts from "echarts";
 import china from "../../assets/json/china.json";
-import { getProvince } from "../../api/statistics";
 
 export default {
   name: "China",

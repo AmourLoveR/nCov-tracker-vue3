@@ -13,9 +13,11 @@
     "vue-router": "^4.0.12"
   },
   "devDependencies": {
+    "@types/rollup-plugin-visualizer": "^4.2.1",
     "@vicons/ionicons5": "^0.11.0",
     "@vitejs/plugin-vue": "^2.0.0",
     "naive-ui": "^2.24.1",
+    "rollup-plugin-visualizer": "^5.6.0",
     "sass": "^1.49.0",
     "vfonts": "^0.0.3",
     "vite": "^2.7.2"
