@@ -2,10 +2,10 @@
   <n-config-provider :theme-overrides="themeOverrides">
     <n-layout has-sider position="absolute">
       <n-layout-sider
+        :collapsed="isMenuShow"
         collapse-mode="width"
         :collapsed-width="64"
         :width="240"
-        show-trigger="arrow-circle"
         content-style="padding: 0;"
       >
         <n-menu
@@ -19,16 +19,32 @@
         />
       </n-layout-sider>
       <n-layout>
-        <n-layout-header
-          ><div class="layout-header">
-            {{ menuValue === "/" ? "首页" : "疫情数据报告" }}
-          </div></n-layout-header
-        >
+        <n-layout-header>
+          <div class="layout-header">
+            <n-icon size="24" @click="isMenuShow = !isMenuShow">
+              <menu-outline />
+            </n-icon>
+            <span>{{ menuValue === "/" ? "首页" : "疫情数据报告" }}</span>
+          </div>
+        </n-layout-header>
         <n-layout-content content-style="padding: 0;">
           <router-view></router-view>
         </n-layout-content>
       </n-layout>
     </n-layout>
+    <n-drawer v-model:show="isMenuShow" placement="left">
+      <n-drawer-content>
+        <n-menu
+          collapse-mode="width"
+          :collapsed-width="64"
+          :icon-size="22"
+          :collapsed-icon-size="24"
+          :options="menuOptions"
+          :value="menuValue"
+          @update:value="menuUpdate"
+        />
+      </n-drawer-content>
+    </n-drawer>
   </n-config-provider>
 </template>
 
@@ -44,8 +60,11 @@ import {
   NLayoutFooter,
   NMenu,
   NIcon,
+  NDrawer,
+  NDrawerContent,
 } from "naive-ui";
 import {
+  MenuOutline,
   HomeOutline,
   SpeedometerOutline,
   DocumentTextOutline,
@@ -53,6 +72,7 @@ import {
 
 export default {
   components: {
+    MenuOutline,
     NConfigProvider,
     NLayout,
     NLayoutSider,
@@ -60,6 +80,8 @@ export default {
     NLayoutContent,
     NLayoutFooter,
     NMenu,
+    NDrawer,
+    NDrawerContent,
   },
   setup() {
     /**
@@ -79,10 +101,13 @@ export default {
         itemIconColorCollapsed: "#BBB",
         itemColorActiveCollapsed: "#2d8cf0",
       },
+      Drawer: {
+        bodyPadding: 0,
+      },
     };
 
     let menuValue = ref("index");
-    let collapsed = ref(false);
+    let isMenuShow = ref(false);
     const route = useRoute();
     const router = useRouter();
 
@@ -113,6 +138,7 @@ export default {
     function menuUpdate(key, item) {
       router.push(key);
       menuValue.value = key;
+      if (document.body.clientWidth < 500) isMenuShow.value = false;
     }
 
     return {
@@ -120,7 +146,7 @@ export default {
       menuValue,
       menuOptions,
       themeOverrides,
-      collapsed,
+      isMenuShow,
     };
   },
 };
@@ -131,7 +157,6 @@ export default {
   background: #fff;
   height: 60px;
   line-height: 60px;
-  color: #10aeb5;
   // font-size: 1rem;
   position: relative;
   z-index: 99;
@@ -139,8 +164,19 @@ export default {
   .layout-header {
     width: 100%;
     height: 100%;
-    padding: 0 16px;
+    padding: 0 1rem;
     box-shadow: 0 1px 4px #00152914;
+    display: flex;
+    align-items: center;
+
+    .n-icon {
+      cursor: pointer;
+    }
+
+    span {
+      color: #10aeb5;
+      margin-left: 1rem;
+    }
   }
 }
 
@@ -151,6 +187,22 @@ export default {
 .n-layout-content {
   background: #f5f7f9;
   min-height: calc(100vh - 60px);
-  // font-size: 1rem;
+}
+
+@media screen and (max-width: 500px) {
+  .n-layout-sider {
+    display: none;
+  }
+}
+</style>
+
+<style>
+.n-drawer {
+  background: #001428;
+}
+@media screen and (min-width: 500px) {
+  .n-drawer-container {
+    display: none;
+  }
 }
 </style>

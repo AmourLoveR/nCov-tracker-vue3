@@ -129,6 +129,9 @@ export default {
       .name {
         font-size: 16px;
         display: block;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
 
       .main-data {
