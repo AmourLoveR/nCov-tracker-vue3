@@ -10,6 +10,7 @@ import {
   NForm,
   NFormItem,
   NSelect,
+  NSpin,
 } from "naive-ui";
 import "./index.css";
 
@@ -22,6 +23,7 @@ const naive = create({
     NForm,
     NFormItem,
     NSelect,
+    NSpin,
   ],
 });
 

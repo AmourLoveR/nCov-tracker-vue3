@@ -6,24 +6,31 @@
       <div>新增本土</div>
       <div>现有病例</div>
     </div>
-    <div class="item" v-for="item in cityData.slice(0, 5)" :key="item.name">
-      <div>{{ item.name }}</div>
-      <div>{{ item.todayConfirm }}</div>
-      <div>{{ item.nowConfirm }}</div>
-    </div>
-    <template v-if="isLoadMore">
-      <div class="item" v-for="item in cityData.slice(5)" :key="item.name">
-        <div>{{ item.name }}</div>
-        <div>{{ item.todayConfirm }}</div>
-        <div>{{ item.nowConfirm }}</div>
+    <div class="content">
+      <template v-if="!isLoading">
+        <div class="item" v-for="item in cityData.slice(0, 5)" :key="item.name">
+          <div>{{ item.name }}</div>
+          <div>{{ item.todayConfirm }}</div>
+          <div>{{ item.nowConfirm }}</div>
+        </div>
+        <template v-if="isLoadMore">
+          <div class="item" v-for="item in cityData.slice(5)" :key="item.name">
+            <div>{{ item.name }}</div>
+            <div>{{ item.todayConfirm }}</div>
+            <div>{{ item.nowConfirm }}</div>
+          </div>
+        </template>
+        <div class="load-more" @click="isLoadMore = !isLoadMore">
+          <span>{{ !isLoadMore ? "加载更多" : "收起" }}</span>
+          <n-icon size="22">
+            <ChevronDown v-if="!isLoadMore" />
+            <ChevronUp v-else />
+          </n-icon>
+        </div>
+      </template>
+      <div v-else class="loading">
+        <n-spin></n-spin>
       </div>
-    </template>
-    <div class="load-more" @click="isLoadMore = !isLoadMore">
-      <span>{{ !isLoadMore ? "加载更多" : "收起" }}</span>
-      <n-icon size="22">
-        <ChevronDown v-if="!isLoadMore" />
-        <ChevronUp v-else/>
-      </n-icon>
     </div>
   </div>
 </template>
@@ -40,6 +47,7 @@ export default {
     const state = reactive({
       cityData: [],
       isLoadMore: false,
+      isLoading: true,
     });
 
     onBeforeMount(async () => {
@@ -54,6 +62,7 @@ export default {
         };
         state.cityData.push(city);
       }
+      state.isLoading = false;
     });
 
     return {
@@ -151,6 +160,13 @@ export default {
     cursor: pointer;
     font-size: 16px;
     color: #555;
+  }
+
+  .loading {
+    height: 17rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 }
 </style>

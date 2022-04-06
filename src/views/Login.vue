@@ -85,15 +85,8 @@ export default {
   width: 100%;
   height: 100%;
   font-size: 1rem;
-  background: url("../assets/imgs/login-bg.jpg") no-repeat;
-  background-size: 100% auto;
 
   .form {
-    width: 400px;
-    position: absolute;
-    top: 40%;
-    left: 12%;
-
     .title {
       height: 70px;
       line-height: 70px;
@@ -121,6 +114,32 @@ export default {
       color: #fff;
       margin-top: 1rem;
       background: linear-gradient(90deg, #77a5eb, #6474d2);
+    }
+  }
+}
+@media screen and (min-width: 500px) {
+  .login {
+    background: url("../assets/imgs/login-bg.jpg") no-repeat;
+    background-size: cover;
+
+    .form {
+      width: 400px;
+      position: absolute;
+      top: 40%;
+      left: 12%;
+    }
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .login {
+    padding-top: 40%;
+    background: url("../assets/imgs/login-bg.jpg") no-repeat;
+    background-size: auto 100%;
+
+    .form {
+      width: 90%;
+      margin: 0 auto;
     }
   }
 }

@@ -1,72 +1,82 @@
 <template>
   <div class="register">
-    <div class="form">
-      <div class="title">nCov Tracker</div>
-      <n-form
-        ref="formRef"
-        :model="formVal"
-        :rules="rules"
-        label-placement="left"
-        label-width="auto"
-        require-mark-placement="right-hanging"
-      >
-        <n-form-item label="资质:" path="register.aptitude">
-          <n-input
-            v-model:value="formVal.register.aptitude"
-            placeholder=""
-          ></n-input>
-        </n-form-item>
-        <n-form-item label="用户名:" path="register.username">
-          <n-input
-            v-model:value="formVal.register.username"
-            placeholder=""
-          ></n-input>
-        </n-form-item>
-        <n-form-item label="密码:" path="register.password">
-          <n-input
-            v-model:value="formVal.register.password"
-            placeholder=""
-            type="password"
-          ></n-input>
-        </n-form-item>
-        <n-form-item label="重复密码:" path="register.confirmPsd">
-          <n-input
-            v-model:value="formVal.register.confirmPsd"
-            placeholder=""
-            type="password"
-          ></n-input>
-        </n-form-item>
-        <n-form-item label="邮箱:" path="register.email">
-          <n-input
-            v-model:value="formVal.register.email"
-            placeholder=""
-          ></n-input>
-        </n-form-item>
-        <n-form-item label="联系电话:" path="register.phone">
-          <n-input
-            v-model:value="formVal.register.phone"
-            placeholder=""
-          ></n-input>
-        </n-form-item>
-      </n-form>
-      <div class="to-login">
-        已有帐号？<span @click="toLogin">立即登录</span>
+    <n-config-provider :theme-overrides="themeOverrides">
+      <div class="form">
+        <div class="title">nCov Tracker</div>
+        <n-form
+          ref="formRef"
+          :model="formVal"
+          :rules="rules"
+          label-placement="left"
+          label-width="auto"
+          require-mark-placement="right-hanging"
+        >
+          <n-form-item label="资质:" path="register.aptitude">
+            <n-input
+              v-model:value="formVal.register.aptitude"
+              :placeholder="isPlaceholderShow ? '资质' : ''"
+            ></n-input>
+          </n-form-item>
+          <n-form-item label="用户名:" path="register.username">
+            <n-input
+              v-model:value="formVal.register.username"
+              :placeholder="isPlaceholderShow ? '用户名' : ''"
+            ></n-input>
+          </n-form-item>
+          <n-form-item label="密码:" path="register.password">
+            <n-input
+              v-model:value="formVal.register.password"
+              :placeholder="isPlaceholderShow ? '密码' : ''"
+              type="password"
+            ></n-input>
+          </n-form-item>
+          <n-form-item label="重复密码:" path="register.confirmPsd">
+            <n-input
+              v-model:value="formVal.register.confirmPsd"
+              :placeholder="isPlaceholderShow ? '重复密码' : ''"
+              type="password"
+            ></n-input>
+          </n-form-item>
+          <n-form-item label="邮箱:" path="register.email">
+            <n-input
+              v-model:value="formVal.register.email"
+              :placeholder="isPlaceholderShow ? '邮箱' : ''"
+            ></n-input>
+          </n-form-item>
+          <n-form-item label="联系电话:" path="register.phone">
+            <n-input
+              v-model:value="formVal.register.phone"
+              :placeholder="isPlaceholderShow ? '联系电话' : ''"
+            ></n-input>
+          </n-form-item>
+        </n-form>
+        <div class="to-login">
+          已有帐号？<span @click="toLogin">立即登录</span>
+        </div>
+        <n-button type="info" round @click="register">注册</n-button>
       </div>
-      <n-button type="info" round @click="register">注册</n-button>
-    </div>
+    </n-config-provider>
   </div>
 </template>
 
 <script>
 import { reactive, ref } from "vue";
 import { useRouter } from "vue-router";
-import { useMessage } from "naive-ui";
+import { useMessage, NConfigProvider } from "naive-ui";
 import { userRegister } from "../api/user";
 export default {
+  components: { NConfigProvider },
   setup() {
     const router = useRouter();
     const formRef = ref(null);
     const message = useMessage();
+    let isPlaceholderShow = ref(false);
+    isPlaceholderShow.value = document.body.clientWidth < 500;
+    const themeOverrides = {
+      Input: {
+        placeholderColor: document.body.clientWidth > 500 ? "#fff" : "#b2b2b2",
+      },
+    };
 
     const formVal = reactive({
       register: {
@@ -111,7 +121,7 @@ export default {
     async function register() {
       formRef.value?.validate((err) => {
         if (!err) message.success("success");
-        else message.error('fail')
+        else message.error("fail");
       });
       // const res = await userRegister(formVal.register);
     }
@@ -122,6 +132,7 @@ export default {
       rules,
       toLogin,
       register,
+      isPlaceholderShow,
     };
   },
 };
@@ -132,11 +143,11 @@ export default {
   width: 100%;
   height: 100%;
   background: url("../assets/imgs/register-bg.png");
+  background-size: cover;
 
   .form {
-    width: 500px;
     height: 600px;
-    padding: 0 2.5rem;
+    padding: 0 2rem;
     border-radius: 20px;
     box-shadow: rgb(0 0 0 / 10%) 0px 12px 20px 0px;
     position: absolute;
@@ -166,6 +177,23 @@ export default {
       width: 150px;
       margin-left: calc(50% - 75px);
       background: linear-gradient(90deg, #77a5eb, #6474d2);
+    }
+  }
+}
+
+@media screen and (min-width: 500px) {
+  .form {
+    width: 500px;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .form {
+    width: 95%;
+    margin: 0 auto;
+
+    :deep(.n-form-item-label) {
+      display: none;
     }
   }
 }
