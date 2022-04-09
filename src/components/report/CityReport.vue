@@ -51,18 +51,23 @@ export default {
     });
 
     onBeforeMount(async () => {
-      const res = await getCity("today");
-      const data = res.data.data;
-      for (let item of data) {
-        if (item.today.confirm <= 0) break;
-        let city = {
-          name: item.name,
-          todayConfirm: item.today.confirm,
-          nowConfirm: item.total.nowConfirm,
-        };
-        state.cityData.push(city);
+      try {
+        const res = await getCity("today");
+        const data = res.data.data;
+        for (let item of data) {
+          if (item.today.confirm <= 0) break;
+          let city = {
+            name: item.name,
+            todayConfirm: item.today.confirm,
+            nowConfirm: item.total.nowConfirm,
+          };
+          state.cityData.push(city);
+        }
+      } catch(e) {
+        console.log(e.message);
+      } finally {
+        state.isLoading = false;
       }
-      state.isLoading = false;
     });
 
     return {

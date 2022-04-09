@@ -7,9 +7,12 @@
 </template>
 
 <script>
+import { getAllArticles } from './api/article'
 export default {
   name: "App",
-  setup() {},
+  setup() {
+    getAllArticles()
+  },
 };
 </script>
 

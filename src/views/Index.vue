@@ -27,7 +27,7 @@
             <span>{{ menuValue === "/" ? "首页" : "疫情数据报告" }}</span>
           </div>
         </n-layout-header>
-        <n-layout-content content-style="padding: 0;">
+        <n-layout-content content-style="padding: 0;" :native-scrollbar="false">
           <router-view></router-view>
         </n-layout-content>
       </n-layout>
@@ -52,6 +52,7 @@
 import { ref, h, resolveComponent } from "vue";
 import { useRoute, useRouter, RouterLink } from "vue-router";
 import {
+  useMessage,
   NConfigProvider,
   NLayout,
   NLayoutSider,
@@ -105,6 +106,8 @@ export default {
         bodyPadding: 0,
       },
     };
+
+    window.$message = useMessage()
 
     let menuValue = ref("index");
     let isMenuShow = ref(false);
@@ -186,7 +189,7 @@ export default {
 
 .n-layout-content {
   background: #f5f7f9;
-  min-height: calc(100vh - 60px);
+  height: calc(100vh - 60px);
 }
 
 @media screen and (max-width: 500px) {

@@ -121,7 +121,7 @@ export default {
       time: formatDate(new Date(), "HH:mm:ss"),
       week: formatDate(new Date(), "week"),
     });
-    window.setInterval(() => {
+    let interval = window.setInterval(() => {
       date.time = formatDate(new Date(), "HH:mm:ss");
     }, 1000);
 
@@ -165,6 +165,7 @@ export default {
 
     onBeforeUnmount(() => {
       window.onresize = null;
+      window.clearInterval(interval)
     });
 
     return {
@@ -230,7 +231,6 @@ export default {
 
     .now-date {
       color: #fff;
-      display: flex;
       padding-left: 0.8rem;
 
       .time {
@@ -385,7 +385,7 @@ export default {
 
     .china-hover {
       width: 100%;
-      height: 80%;
+      height: 70%;
     }
 
     .proportion-hover {
@@ -401,6 +401,25 @@ export default {
       font-weight: 700;
       border-radius: 0.25rem;
       font-size: 1.2rem;
+    }
+  }
+}
+
+@media screen and (min-width: 500px) {
+  #visualization {
+    .now-date {
+      display: flex;
+    }
+  }
+}
+
+@media screen and (max-width: 500px) {
+  #visualization {
+    .now-date {
+      display: none;
+    }
+    .n-button {
+      display: none;
     }
   }
 }
