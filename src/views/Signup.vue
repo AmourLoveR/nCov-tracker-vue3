@@ -1,61 +1,59 @@
 <template>
   <div class="register">
-    <n-config-provider :theme-overrides="themeOverrides">
-      <div class="form">
-        <div class="title">nCov Tracker</div>
-        <n-form
-          ref="formRef"
-          :model="formVal"
-          :rules="rules"
-          label-placement="left"
-          label-width="auto"
-          require-mark-placement="right-hanging"
-        >
-          <n-form-item label="资质:" path="register.aptitude">
-            <n-input
-              v-model:value="formVal.register.aptitude"
-              :placeholder="isPlaceholderShow ? '资质' : ''"
-            ></n-input>
-          </n-form-item>
-          <n-form-item label="用户名:" path="register.username">
-            <n-input
-              v-model:value="formVal.register.username"
-              :placeholder="isPlaceholderShow ? '用户名' : ''"
-            ></n-input>
-          </n-form-item>
-          <n-form-item label="密码:" path="register.password">
-            <n-input
-              v-model:value="formVal.register.password"
-              :placeholder="isPlaceholderShow ? '密码' : ''"
-              type="password"
-            ></n-input>
-          </n-form-item>
-          <n-form-item label="重复密码:" path="register.confirmPsd">
-            <n-input
-              v-model:value="formVal.register.confirmPsd"
-              :placeholder="isPlaceholderShow ? '重复密码' : ''"
-              type="password"
-            ></n-input>
-          </n-form-item>
-          <n-form-item label="邮箱:" path="register.email">
-            <n-input
-              v-model:value="formVal.register.email"
-              :placeholder="isPlaceholderShow ? '邮箱' : ''"
-            ></n-input>
-          </n-form-item>
-          <n-form-item label="联系电话:" path="register.phone">
-            <n-input
-              v-model:value="formVal.register.phone"
-              :placeholder="isPlaceholderShow ? '联系电话' : ''"
-            ></n-input>
-          </n-form-item>
-        </n-form>
-        <div class="to-login">
-          已有帐号？<span @click="toLogin">立即登录</span>
-        </div>
-        <n-button type="info" round @click="register">注册</n-button>
+    <div class="form">
+      <div class="title">nCov Tracker</div>
+      <n-form
+        ref="formRef"
+        :model="formVal"
+        :rules="rules"
+        label-placement="left"
+        label-width="auto"
+        require-mark-placement="right-hanging"
+      >
+        <n-form-item label="资质:" path="register.aptitude">
+          <n-input
+            v-model:value="formVal.register.aptitude"
+            :placeholder="isPlaceholderShow ? '资质' : ''"
+          ></n-input>
+        </n-form-item>
+        <n-form-item label="用户名:" path="register.username">
+          <n-input
+            v-model:value="formVal.register.username"
+            :placeholder="isPlaceholderShow ? '用户名' : ''"
+          ></n-input>
+        </n-form-item>
+        <n-form-item label="密码:" path="register.password">
+          <n-input
+            v-model:value="formVal.register.password"
+            :placeholder="isPlaceholderShow ? '密码' : ''"
+            type="password"
+          ></n-input>
+        </n-form-item>
+        <n-form-item label="重复密码:" path="register.confirmPsd">
+          <n-input
+            v-model:value="formVal.register.confirmPsd"
+            :placeholder="isPlaceholderShow ? '重复密码' : ''"
+            type="password"
+          ></n-input>
+        </n-form-item>
+        <n-form-item label="邮箱:" path="register.email">
+          <n-input
+            v-model:value="formVal.register.email"
+            :placeholder="isPlaceholderShow ? '邮箱' : ''"
+          ></n-input>
+        </n-form-item>
+        <n-form-item label="联系电话:" path="register.phone">
+          <n-input
+            v-model:value="formVal.register.phone"
+            :placeholder="isPlaceholderShow ? '联系电话' : ''"
+          ></n-input>
+        </n-form-item>
+      </n-form>
+      <div class="to-login">
+        已有帐号？<span @click="toLogin">立即登录</span>
       </div>
-    </n-config-provider>
+      <n-button type="info" round @click="register">注册</n-button>
+    </div>
   </div>
 </template>
 
@@ -63,7 +61,7 @@
 import { reactive, ref } from "vue";
 import { useRouter } from "vue-router";
 import { useMessage, NConfigProvider } from "naive-ui";
-import { userRegister } from "../api/user";
+import { userRegister, userRegisters } from "../api/user";
 export default {
   components: { NConfigProvider },
   setup() {
@@ -72,11 +70,6 @@ export default {
     const message = useMessage();
     let isPlaceholderShow = ref(false);
     isPlaceholderShow.value = document.body.clientWidth < 500;
-    const themeOverrides = {
-      Input: {
-        placeholderColor: document.body.clientWidth > 500 ? "#fff" : "#b2b2b2",
-      },
-    };
 
     const formVal = reactive({
       register: {
@@ -124,6 +117,7 @@ export default {
         else message.error("fail");
       });
       // const res = await userRegister(formVal.register);
+      await userRegisters()
     }
 
     return {

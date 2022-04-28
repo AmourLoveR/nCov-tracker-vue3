@@ -22,7 +22,11 @@
         <n-layout-header>
           <div class="layout-header">
             <n-icon size="24" @click="isMenuShow = !isMenuShow">
-              <menu-outline />
+              <menu-outline v-if="screenSize == 'small'" />
+              <template v-else>
+                <img v-show="!isMenuShow" src="../assets/imgs/menuClose.svg" />
+                <img v-show="isMenuShow" src="../assets/imgs/menuOpen.svg" />
+              </template>
             </n-icon>
             <span>{{ menuValue === "/" ? "首页" : "疫情数据报告" }}</span>
           </div>
@@ -69,6 +73,7 @@ import {
   HomeOutline,
   SpeedometerOutline,
   DocumentTextOutline,
+  BookOutline,
 } from "@vicons/ionicons5";
 
 export default {
@@ -98,21 +103,24 @@ export default {
         itemIconColorHover: "#FFF",
         itemTextColorActive: "#FFF",
         itemIconColorActive: "#FFF",
-        itemColorActive: "#2d8cf0",
+        itemColorActive: "#5a92f5",
         itemIconColorCollapsed: "#BBB",
-        itemColorActiveCollapsed: "#2d8cf0",
+        itemColorActiveCollapsed: "#5a92f5",
       },
       Drawer: {
         bodyPadding: 0,
       },
     };
 
-    window.$message = useMessage()
+    window.$message = useMessage();
 
     let menuValue = ref("index");
     let isMenuShow = ref(false);
+    let screenSize = ref("large");
     const route = useRoute();
     const router = useRouter();
+
+    screenSize = document.body.clientWidth < 500 ? "small" : "large";
 
     menuValue.value = route.path;
 
@@ -132,6 +140,11 @@ export default {
         icon: renderIcon(DocumentTextOutline),
       },
       {
+        label: "文章推送",
+        key: "/article",
+        icon: renderIcon(BookOutline),
+      },
+      {
         label: "数据大屏",
         key: "/visualization",
         icon: renderIcon(SpeedometerOutline),
@@ -141,7 +154,6 @@ export default {
     function menuUpdate(key, item) {
       router.push(key);
       menuValue.value = key;
-      if (document.body.clientWidth < 500) isMenuShow.value = false;
     }
 
     return {
@@ -150,6 +162,7 @@ export default {
       menuOptions,
       themeOverrides,
       isMenuShow,
+      screenSize
     };
   },
 };
@@ -176,6 +189,11 @@ export default {
       cursor: pointer;
     }
 
+    img {
+      width: 80%;
+      height: 80%;
+    }
+
     span {
       color: #10aeb5;
       margin-left: 1rem;
@@ -188,7 +206,7 @@ export default {
 }
 
 .n-layout-content {
-  background: #f5f7f9;
+  // background: #f5f5f5;
   height: calc(100vh - 60px);
 }
 

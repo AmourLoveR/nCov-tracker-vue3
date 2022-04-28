@@ -1,20 +1,17 @@
 <template>
-  <div>
-    <img src="../assets/imgs/colors.jpg" />
+  <div style="{display: flex}">
+    <div class="test active">Test</div>
+    <div class="test" :class="{active: true}">Test</div>
+    <div class="test">Test</div>
+    <div class="test">Test</div>
   </div>
 </template>
 
-<script>
-import { defineComponent, ref } from "vue";
-import axios from "axios";
-
-export default defineComponent({
-  setup() {
-    axios.get("http://myhost.fallen-angle.com:8081/api/v1/statistics/china").then(res=> {
-      console.log('axios', res);
-    }).catch(err => {
-      console.log(err);
-    })
-  },
-});
+<script setup>
 </script>
+
+<style scoped>
+.test.active {
+  color: aqua;
+}
+</style>
