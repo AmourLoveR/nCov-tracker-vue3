@@ -16,6 +16,22 @@
             :placeholder="isPlaceholderShow ? '资质' : ''"
           ></n-input>
         </n-form-item>
+        <n-form-item label="角色:" path="register.role">
+          <n-select
+            v-model:value="formVal.register.role"
+            :options="roleOptions"
+            :placeholder="isPlaceholderShow ? '角色' : ''"
+          ></n-select>
+        </n-form-item>
+        <n-form-item label="所属地区:" path="register.region">
+          <n-cascader
+            :options="getRegionOptions()"
+            check-strategy="child"
+            :placeholder="isPlaceholderShow ? '所属地区' : ''"
+            clearable
+            @update:value="handleUpdateRegion"
+          ></n-cascader>
+        </n-form-item>
         <n-form-item label="用户名:" path="register.username">
           <n-input
             v-model:value="formVal.register.username"
@@ -52,23 +68,49 @@
       <div class="to-login">
         已有帐号？<span @click="toLogin">立即登录</span>
       </div>
-      <n-button type="info" round @click="register">注册</n-button>
+      <n-button
+        type="info"
+        round
+        :loading="buttonLoading"
+        @click="register"
+      >注册</n-button>
     </div>
   </div>
+  <c-dialog v-show="dialogShow" @close="dialogShow = false"></c-dialog>
 </template>
 
 <script>
-import { reactive, ref } from "vue";
+import { reactive, ref, watch, provide } from "vue";
 import { useRouter } from "vue-router";
-import { useMessage, NConfigProvider } from "naive-ui";
-import { userRegister, userRegisters } from "../api/user";
+import { useMessage, NConfigProvider, NCascader } from "naive-ui";
+import CDialog from "../components/CDialog.vue";
+import { userRegister, userRegisters, getEmailCode } from "../api/user";
+import { getRegionOptions } from "../utils/utils";
+
+const roleOptions = [
+  {
+    label: "管理员",
+    value: 12,
+  },
+  {
+    label: "工作人员",
+    value: 8,
+  },
+  {
+    label: "志愿者",
+    value: 4,
+  },
+];
+
 export default {
-  components: { NConfigProvider },
+  components: { NConfigProvider, NCascader, CDialog },
   setup() {
     const router = useRouter();
     const formRef = ref(null);
     const message = useMessage();
     let isPlaceholderShow = ref(false);
+    let dialogShow = ref(false);
+    let buttonLoading = ref(false);
     isPlaceholderShow.value = document.body.clientWidth < 500;
 
     const formVal = reactive({
@@ -79,6 +121,8 @@ export default {
         confirmPsd: "",
         phone: "",
         username: "",
+        region: null,
+        role: null,
       },
     });
 
@@ -104,29 +148,59 @@ export default {
             message: "两次密码输入不一致",
           },
         ],
+        region: {
+          required: true,
+          message: "请选择所属地区",
+        },
+        role: {
+          required: true,
+          message: "请选择角色",
+        },
+        email: {
+          required: true,
+          message: "请输入邮箱",
+        },
       },
     };
+
+    function handleUpdateRegion(value, option) {
+      formVal.register.region = option.parent + " " + option.value;
+    }
 
     function toLogin() {
       router.push("/login");
     }
 
-    async function register() {
-      formRef.value?.validate((err) => {
-        if (!err) message.success("success");
-        else message.error("fail");
+    // watch(formVal, () => {
+    //   console.log(formVal.register);
+    // });
+
+    function register() {
+      formRef.value?.validate(async (err) => {
+        if (!err) {
+          buttonLoading.value = true;
+          await getEmailCode(formVal.register.email);
+          dialogShow.value = true;
+          buttonLoading.value = false;
+          // await userRegister(formVal.register);
+        } else message.error("表单校验未通过！");
       });
-      // const res = await userRegister(formVal.register);
-      await userRegisters()
     }
+
+    provide('register', formVal.register)
 
     return {
       formRef,
       formVal,
       rules,
+      isPlaceholderShow,
       toLogin,
       register,
-      isPlaceholderShow,
+      handleUpdateRegion,
+      getRegionOptions,
+      roleOptions,
+      dialogShow,
+      buttonLoading,
     };
   },
 };
@@ -140,9 +214,8 @@ export default {
   background-size: cover;
 
   .form {
-    height: 600px;
-    padding: 0 2rem;
-    border-radius: 20px;
+    padding: 1rem 2rem;
+    border-radius: 15px;
     box-shadow: rgb(0 0 0 / 10%) 0px 12px 20px 0px;
     position: absolute;
     left: 50%;
@@ -151,8 +224,7 @@ export default {
     background: #fff;
 
     .title {
-      height: 80px;
-      line-height: 80px;
+      line-height: 50px;
       text-align: center;
       font-size: 22px;
     }

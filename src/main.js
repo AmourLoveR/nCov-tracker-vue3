@@ -5,7 +5,6 @@ import {
   create,
   NButton,
   NIcon,
-  NMessageProvider,
   NInput,
   NForm,
   NFormItem,
@@ -18,7 +17,6 @@ const naive = create({
   components: [
     NButton,
     NIcon,
-    NMessageProvider,
     NInput,
     NForm,
     NFormItem,

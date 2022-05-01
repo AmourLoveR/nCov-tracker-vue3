@@ -1,17 +1,5 @@
 <template>
   <div class="timeline">
-    <!-- <div class="style">
-      <div class="timeline-icon"></div>
-      <div class="line"></div>
-    </div>
-    <div class="content">
-      <div class="time">04月25日 08:52</div>
-      <router-link :to="'/preview/'+props.article.id" target="_blank">
-        <div class="title">
-          {{ props.article.title ? props.article.title : "无标题" }}
-        </div>
-      </router-link>
-    </div> -->
     <div class="above">
       <div class="timeline-icon"></div>
       <span class="time">04月25日 08:52</span>

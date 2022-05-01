@@ -10,7 +10,7 @@ export function getChina() {
 export function getProvince(sort) {
     return service.request({
         method: 'get',
-        url: `/statistics/provience/${sort}`,
+        url: `/statistics/province/${sort}`,
     })
 }
 

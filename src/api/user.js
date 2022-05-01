@@ -22,3 +22,17 @@ export function userRegisters() {
     url: "/user/registers",
   });
 }
+
+export function getEmailCode(email) {
+  return service.request({
+    method: "get",
+    url: `/user/code/${email}`,
+  });
+}
+
+export function sendEmailCode(email, code) {
+  return service.request({
+    method: "get",
+    url: `/user/code/${email}/${code}`,
+  });
+}

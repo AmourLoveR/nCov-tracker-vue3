@@ -1,63 +1,60 @@
 <template>
-  <n-config-provider :theme-overrides="themeOverrides">
-    <n-layout has-sider position="absolute">
-      <n-layout-sider
-        :collapsed="isMenuShow"
+  <n-layout has-sider position="absolute">
+    <n-layout-sider
+      :collapsed="isMenuShow"
+      collapse-mode="width"
+      :collapsed-width="64"
+      :width="240"
+      content-style="padding: 0;"
+    >
+      <n-menu
         collapse-mode="width"
         :collapsed-width="64"
-        :width="240"
-        content-style="padding: 0;"
-      >
-        <n-menu
-          collapse-mode="width"
-          :collapsed-width="64"
-          :icon-size="22"
-          :collapsed-icon-size="24"
-          :options="menuOptions"
-          :value="menuValue"
-          @update:value="menuUpdate"
-        />
-      </n-layout-sider>
-      <n-layout>
-        <n-layout-header>
-          <div class="layout-header">
-            <n-icon size="24" @click="isMenuShow = !isMenuShow">
-              <menu-outline v-if="screenSize == 'small'" />
-              <template v-else>
-                <img v-show="!isMenuShow" src="../assets/imgs/menuClose.svg" />
-                <img v-show="isMenuShow" src="../assets/imgs/menuOpen.svg" />
-              </template>
-            </n-icon>
-            <span>{{ menuValue === "/" ? "首页" : "疫情数据报告" }}</span>
-          </div>
-        </n-layout-header>
-        <n-layout-content content-style="padding: 0;" :native-scrollbar="false">
-          <router-view></router-view>
-        </n-layout-content>
-      </n-layout>
+        :icon-size="22"
+        :collapsed-icon-size="24"
+        :options="menuOptions"
+        :value="menuValue"
+        @update:value="menuUpdate"
+      />
+    </n-layout-sider>
+    <n-layout>
+      <n-layout-header>
+        <div class="layout-header">
+          <n-icon size="24" @click="isMenuShow = !isMenuShow">
+            <menu-outline v-if="screenSize == 'small'" />
+            <template v-else>
+              <img v-show="!isMenuShow" src="../assets/imgs/menuClose.svg" />
+              <img v-show="isMenuShow" src="../assets/imgs/menuOpen.svg" />
+            </template>
+          </n-icon>
+          <span>{{ menuValue === "/" ? "首页" : "疫情数据报告" }}</span>
+        </div>
+      </n-layout-header>
+      <n-layout-content content-style="padding: 0;" :native-scrollbar="false">
+        <router-view></router-view>
+      </n-layout-content>
     </n-layout>
-    <n-drawer v-model:show="isMenuShow" placement="left">
-      <n-drawer-content>
-        <n-menu
-          collapse-mode="width"
-          :collapsed-width="64"
-          :icon-size="22"
-          :collapsed-icon-size="24"
-          :options="menuOptions"
-          :value="menuValue"
-          @update:value="menuUpdate"
-        />
-      </n-drawer-content>
-    </n-drawer>
-  </n-config-provider>
+  </n-layout>
+  <n-drawer v-model:show="isMenuShow" placement="left">
+    <n-drawer-content>
+      <n-menu
+        collapse-mode="width"
+        :collapsed-width="64"
+        :icon-size="22"
+        :collapsed-icon-size="24"
+        :options="menuOptions"
+        :value="menuValue"
+        @update:value="menuUpdate"
+      />
+    </n-drawer-content>
+  </n-drawer>
 </template>
 
 <script>
-import { ref, h, resolveComponent } from "vue";
+import { ref, h } from "vue";
 import { useRoute, useRouter, RouterLink } from "vue-router";
 import {
   useMessage,
-  NConfigProvider,
   NLayout,
   NLayoutSider,
   NLayoutHeader,
@@ -79,7 +76,6 @@ import {
 export default {
   components: {
     MenuOutline,
-    NConfigProvider,
     NLayout,
     NLayoutSider,
     NLayoutHeader,
@@ -90,27 +86,6 @@ export default {
     NDrawerContent,
   },
   setup() {
-    /**
-     * js 文件下使用这个做类型提示
-     * @type import('naive-ui').GlobalThemeOverrides
-     */
-    const themeOverrides = {
-      Menu: {
-        // fontSize: '1rem',
-        itemTextColor: "#BBB",
-        itemIconColor: "#BBB",
-        itemTextColorHover: "#FFF",
-        itemIconColorHover: "#FFF",
-        itemTextColorActive: "#FFF",
-        itemIconColorActive: "#FFF",
-        itemColorActive: "#5a92f5",
-        itemIconColorCollapsed: "#BBB",
-        itemColorActiveCollapsed: "#5a92f5",
-      },
-      Drawer: {
-        bodyPadding: 0,
-      },
-    };
 
     window.$message = useMessage();
 
@@ -160,9 +135,8 @@ export default {
       menuUpdate,
       menuValue,
       menuOptions,
-      themeOverrides,
       isMenuShow,
-      screenSize
+      screenSize,
     };
   },
 };

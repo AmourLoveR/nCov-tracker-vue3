@@ -5,9 +5,6 @@
     </div>
     <div>
       <timeline v-for="item in articles" :key="item.id" :article="item" />
-      <timeline v-for="item in articles" :key="item.id" :article="item" />
-      <timeline v-for="item in articles" :key="item.id" :article="item" />
-      <timeline v-for="item in articles" :key="item.id" :article="item" />
     </div>
   </div>
 </template>
