@@ -1,44 +1,35 @@
 <template>
-  <n-form
-    ref="formRef"
-    :model="formValue"
-    :rules="rules"
-  >
-    <n-form-item label="电话号码" path="phone">
-      <n-input v-model:value="formValue.phone" placeholder="电话号码" />
-    </n-form-item>
-    <n-form-item>
-      <n-button attr-type="button" @click="handleValidateClick">
-        验证
-      </n-button>
-    </n-form-item>
-  </n-form>
+  <n-button @click="showModal = true">
+    来吧
+  </n-button>
+  <n-modal v-model:show="showModal">
+    <n-card
+      style="width: 600px"
+      title="模态框"
+      :bordered="false"
+      size="huge"
+      role="dialog"
+      aria-modal="true"
+    >
+      <template #header-extra>
+        噢！
+      </template>
+      内容
+      <template #footer>
+        尾部
+      </template>
+    </n-card>
+  </n-modal>
 </template>
 
-<script setup>
-import { ref } from "vue";
-import { useMessage } from "naive-ui";
+<script>
+import { defineComponent, ref } from "vue";
 
-const formRef = ref(null);
-const message = useMessage();
-let formValue = ref({
-  phone: "",
+export default defineComponent({
+  setup() {
+    return {
+      showModal: ref(false)
+    };
+  }
 });
-const rules = {
-  phone: {
-    required: true,
-    message: "请输入电话号码",
-    // trigger: ["input"],
-  },
-};
-function handleValidateClick(e) {
-  formRef.value?.validate((errors) => {
-    if (!errors) {
-      message.success("Valid");
-    } else {
-      console.log(errors);
-      message.error("Invalid");
-    }
-  });
-}
 </script>

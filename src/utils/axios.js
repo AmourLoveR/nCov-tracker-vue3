@@ -1,11 +1,14 @@
 import axios from "axios";
+import { useUserStore } from "../store/index";
+import { decodeToken } from "../utils/utils";
+
+const userStore = useUserStore();
 
 const service = axios.create({
-  baseURL: "/api/v1",
-  timeout: 10000,
+  baseURL: "http://myhost.fallen-angle.com:8081/api/v1",
+  // timeout: 10000,
   headers: {
     "Content-Type": "application/json;charset=UTF-8",
-    Token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IjE4NTM2MzMyODJAcXEuY29tIiwiZXhwIjoxNjUxNjQ5MTk3LCJpYXQiOjE2NTAzNTMxOTcsImlkIjoxLCJyb2xlIjoyMCwidXNlcm5hbWUiOiJ3emwifQ.INgj-duGn9Q_nU7Xki06dmEjVuv0yOxaX0WBfBM8PZY",
   },
 });
 
@@ -13,7 +16,8 @@ const service = axios.create({
 service.interceptors.request.use(
   function (config) {
     // 在发送请求之前做些什么
-    // config.headers.Authorization = "token";
+    const token = localStorage.getItem("token");
+    config.headers.Token = token;
     return config;
   },
   function (error) {
@@ -26,13 +30,21 @@ service.interceptors.request.use(
 service.interceptors.response.use(
   function (response) {
     // 对响应数据做点什么
-    // if (window.$message) window.$message.success(response.X-Token);
-    console.log(response);
+    if (response.headers["x-token"]) {
+      const token = response.headers["x-token"];
+      localStorage.setItem("token", token);
+      const user = decodeToken(token);
+      userStore.setUserinfo(user);
+    } else if (response.headers["x-token"] == "") {
+      location.hash = "login";
+    }
+
     return response;
   },
   function (error) {
     // 对响应错误做点什么
-    window.$message.error(error.message);
+    if (window.$message) window.$message.error(error.message);
+    console.log(error.response);
     return Promise.reject(error);
   }
 );

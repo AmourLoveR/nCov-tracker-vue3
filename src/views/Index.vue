@@ -28,6 +28,11 @@
             </template>
           </n-icon>
           <span>{{ menuValue === "/" ? "首页" : "疫情数据报告" }}</span>
+          <span>
+            username: {{ userStore.username }} 
+            /region: {{ userStore.region }} 
+            /role: {{ userStore.role }}
+          </span>
         </div>
       </n-layout-header>
       <n-layout-content content-style="padding: 0;" :native-scrollbar="false">
@@ -52,7 +57,7 @@
 
 <script>
 import { ref, h } from "vue";
-import { useRoute, useRouter, RouterLink } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import {
   useMessage,
   NLayout,
@@ -71,7 +76,10 @@ import {
   SpeedometerOutline,
   DocumentTextOutline,
   BookOutline,
+  PeopleOutline,
 } from "@vicons/ionicons5";
+import { useUserStore } from "../store/index";
+import { decodeToken } from "../utils/utils";
 
 export default {
   components: {
@@ -86,6 +94,14 @@ export default {
     NDrawerContent,
   },
   setup() {
+    const userStore = useUserStore();
+
+    // 若存在token，初始化userinfo
+    const token = localStorage.getItem("token");
+    if (token) {
+      const user = decodeToken(token);
+      userStore.setUserinfo(user);
+    }
 
     window.$message = useMessage();
 
@@ -124,6 +140,11 @@ export default {
         key: "/visualization",
         icon: renderIcon(SpeedometerOutline),
       },
+      {
+        label: "账号管理",
+        key: "/accounts",
+        icon: renderIcon(PeopleOutline),
+      },
     ];
 
     function menuUpdate(key, item) {
@@ -137,6 +158,7 @@ export default {
       menuOptions,
       isMenuShow,
       screenSize,
+      userStore,
     };
   },
 };
@@ -157,6 +179,7 @@ export default {
     padding: 0 1rem;
     box-shadow: 0 1px 4px #00152914;
     display: flex;
+    justify-content: space-between;
     align-items: center;
 
     .n-icon {

@@ -20,3 +20,10 @@ export function getCity(sort) {
         url: `/statistics/city/${sort}`,
     })
 }
+
+export function getChinaTrend() {
+    return service.request({
+        method: 'get',
+        url: 'statistics/china/trend',
+    })
+}

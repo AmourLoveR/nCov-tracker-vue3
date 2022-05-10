@@ -8,39 +8,26 @@ import * as echarts from "echarts";
 import { formatDate } from "../../utils/utils";
 export default {
   name: "growthTrend",
-  props: ["chinaRes"],
+  props: ["chinaTrend", "type"],
   setup(props) {
     let chart = undefined;
-    let chinaDayList = JSON.parse(localStorage.getItem("chinaDayList")) || [];
-    const length = chinaDayList.length;
-
     function chartResize() {
       chart.resize();
     }
 
     function setChart() {
-      const data = props.chinaRes.data.data;
-      const item = {
-        date: formatDate(new Date(), "YYYY-MM-DD"),
-        localConfirm: data.chinaAdd.localConfirmH5,
-        localConfirmTotal: data.chinaTotal.localConfirm,
-      };
-      if (
-        length !== 0 &&
-        chinaDayList[length - 1]?.date === formatDate(new Date(), "YYYY-MM-DD")
-      )
-        chinaDayList.pop();
-      chinaDayList.push(item);
-      localStorage.setItem("chinaDayList", JSON.stringify(chinaDayList));
-
-      const dates = [];
-      const localConfirms = [];
-      const localConfirmTotals = [];
-      chinaDayList.forEach((item) => {
+      const { chinaDayAddList, ChinaDayList } = props.chinaTrend;
+      const dates = []; // 存放日期
+      const localConfirmadd = []; // 存放每日本土新增
+      const localConfirm = []; // 存放每日本土现有确诊
+      for (let item of chinaDayAddList) {
         dates.push(item.date);
-        localConfirms.push(item.localConfirm);
-        localConfirmTotals.push(item.localConfirmTotal);
-      });
+        localConfirmadd.push(item.localConfirmadd);
+      }
+      for (let item of ChinaDayList) {
+        // dates.push(item.date);
+        localConfirm.push(item.localConfirm);
+      }
       chart = echarts.init(document.getElementById("growthTrend"));
       chart.setOption({
         title: {},
@@ -54,7 +41,8 @@ export default {
           },
         },
         legend: {
-          data: ["本土新增", "现有确诊"],
+          show: false,
+          data: ["本土新增"],
           textStyle: { color: "#fff" },
         },
         toolbox: {},
@@ -62,6 +50,7 @@ export default {
           left: "3%",
           right: "4%",
           bottom: "3%",
+          top: "10%",
           containLabel: true,
         },
         xAxis: [
@@ -78,7 +67,6 @@ export default {
         ],
         series: [
           {
-            name: "本土新增",
             type: "line",
             stack: "Total",
             itemStyle: {
@@ -90,35 +78,29 @@ export default {
             emphasis: {
               focus: "series",
             },
-            data: localConfirms,
-          },
-          {
-            name: "现有确诊",
-            type: "line",
-            stack: "Total",
-            itemStyle: {
-              opacity: 0,
-            },
-            lineStyle: {
-              color: "#f19914",
-            },
-            emphasis: {
-              focus: "series",
-            },
-            data: localConfirmTotals,
+            data: props.type == "add" ? localConfirmadd : localConfirm,
           },
         ],
       });
     }
 
+    // 监听trend数据，当有数据时开始渲染
     watch(
-      () => props.chinaRes,
+      () => props.chinaTrend,
       (val, oldVal) => {
-        if (val.data.data) {
+        if (val.chinaDayAddList) {
           setChart();
         }
       },
       { immediate: false }
+    );
+
+    // 监听父组件数据type，渲染不同数据
+    watch(
+      () => props.type,
+      (val, oldVal) => {
+        setChart()
+      }
     );
 
     return {

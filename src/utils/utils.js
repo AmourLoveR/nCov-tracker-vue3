@@ -24,6 +24,15 @@ export function formatDate(date, format = "YYYY-MM-DD HH:mm:ss") {
   return format;
 }
 
+// 获取token中用户信息
+export function decodeToken(token) {
+  const infoArr = token.split(".");
+  let user = JSON.parse(
+    decodeURIComponent(escape(window.atob(infoArr[1].replace(/_/g, "/").replace(/-/g, "+"))))
+  );
+  return user
+}
+
 // 获取地区数据
 export function getRegionOptions() {
   const regions = [

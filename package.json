@@ -11,11 +11,13 @@
     "axios": "^0.25.0",
     "echarts": "^5.2.2",
     "md-editor-v3": "^1.11.6",
+    "pinia": "^2.0.13",
     "vue": "^3.2.25",
     "vue-router": "^4.0.12"
   },
   "devDependencies": {
     "@types/rollup-plugin-visualizer": "^4.2.1",
+    "@vicons/antd": "^0.12.0",
     "@vicons/ionicons5": "^0.11.0",
     "@vitejs/plugin-vue": "^2.0.0",
     "naive-ui": "^2.24.1",

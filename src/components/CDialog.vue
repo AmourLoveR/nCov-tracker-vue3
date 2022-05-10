@@ -63,8 +63,10 @@ function confirm() {
       const { match } = codeRes.data.data;
       if (match) {
         const registerRes = await userRegister(register);
-        if (registerRes.data.msg == "Registered")
+        if (registerRes.data.msg == "Success")
           message.success("账号注册成功！待管理员审核");
+        else if (registerRes.data.msg == "Registered")
+          message.warning("该邮箱账号已存在！");
         close();
       } else message.error("验证码错误！");
     }

@@ -55,7 +55,6 @@ const naturalClass = {
   background-color: #1d7dfa;
 
   &:hover {
-    // background-color: #388eff;
     opacity: 0.7;
   }
 

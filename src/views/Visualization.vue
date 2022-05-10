@@ -42,9 +42,28 @@
           </div>
         </div>
         <div class="growth-trend">
-          <div class="item-title">增长趋势统计</div>
+          <div class="tren-header">
+            <div
+              class="item-title"
+              :style="{ color: activeTrend == 'add' ? '#77b0cb' : '#999' }"
+              @click="activeTrend = 'add'"
+            >
+              本土新增确诊趋势
+            </div>
+            <div
+              class="item-title"
+              :style="{ color: activeTrend == 'add' ? '#999' : '#77b0cb' }"
+              @click="activeTrend = 'all'"
+            >
+              本土现有确诊趋势
+            </div>
+          </div>
           <div class="trend-hover">
-            <GrowthTrend ref="trendRef" :chinaRes="chinaRes"></GrowthTrend>
+            <GrowthTrend
+              ref="trendRef"
+              :chinaTrend="chinaTrend"
+              :type="activeTrend"
+            ></GrowthTrend>
           </div>
         </div>
       </div>
@@ -96,10 +115,15 @@
 <script>
 import { ref, reactive, toRefs, onBeforeMount, onBeforeUnmount } from "vue";
 import { Scan } from "@vicons/ionicons5";
-import { getChina, getCity, getProvince } from "../api/statistics";
+import {
+  getChina,
+  getCity,
+  getProvince,
+  getChinaTrend,
+} from "../api/statistics";
 import { formatDate } from "../utils/utils";
 import China from "../components/chart/China.vue";
-import GrowthTrend from "../components/visualization/GrowthTrend.vue";
+import GrowthTrend from "../components/chart/GrowthTrend.vue";
 import IncreasedProportion from "../components/visualization/IncreasedProportion.vue";
 
 export default {
@@ -112,10 +136,18 @@ export default {
       provinceRes: {},
       provinceData: [],
       cityData: [],
+      chinaTrend: [],
     });
     const chinaRef = ref(null);
     const trendRef = ref(null);
     const proportionRef = ref(null);
+
+    let activeTrend = ref("add"); // 定义趋势图active
+    // function selectTrend(type) {
+    //   acti
+    // }
+
+    // 定义时间数据
     const date = reactive({
       date: formatDate(new Date(), "YYYY.MM.DD"),
       time: formatDate(new Date(), "HH:mm:ss"),
@@ -130,6 +162,14 @@ export default {
       trendRef.value.chartResize();
       proportionRef.value.chartResize();
     };
+
+    // 获取国内疫情趋势数据
+    getChinaTrendAsyncFn();
+    async function getChinaTrendAsyncFn() {
+      const res = await getChinaTrend();
+      state.chinaTrend = res.data.data;
+      console.log(state.chinaTrend);
+    }
 
     onBeforeMount(async () => {
       state.chinaRes = await getChina();
@@ -165,7 +205,7 @@ export default {
 
     onBeforeUnmount(() => {
       window.onresize = null;
-      window.clearInterval(interval)
+      window.clearInterval(interval);
     });
 
     return {
@@ -176,6 +216,7 @@ export default {
       proportionRef,
       enterfullscreen,
       exitfullscreen,
+      activeTrend,
     };
 
     //控制全屏
@@ -355,6 +396,16 @@ export default {
       height: 40%;
       padding-left: 0.8rem;
 
+      .tren-header {
+        display: flex;
+        justify-content: space-between;
+        padding-right: 0.8rem;
+
+        & > div {
+          cursor: pointer;
+        }
+      }
+
       .trend-hover {
         height: calc(100% - 50px);
       }
@@ -396,6 +447,7 @@ export default {
 
     .item-title {
       height: 50px;
+      line-height: 50px;
       padding-left: 0.5rem;
       color: #77b0cb;
       font-weight: 700;

@@ -10,12 +10,12 @@
         label-width="auto"
         require-mark-placement="right-hanging"
       >
-        <n-form-item label="资质:" path="register.aptitude">
+        <!-- <n-form-item label="资质:" path="register.aptitude">
           <n-input
             v-model:value="formVal.register.aptitude"
             :placeholder="isPlaceholderShow ? '资质' : ''"
           ></n-input>
-        </n-form-item>
+        </n-form-item> -->
         <n-form-item label="角色:" path="register.role">
           <n-select
             v-model:value="formVal.register.role"
@@ -70,6 +70,7 @@
       </div>
       <n-button
         type="info"
+        color="#6474d2"
         round
         :loading="buttonLoading"
         @click="register"
@@ -84,7 +85,7 @@ import { reactive, ref, watch, provide } from "vue";
 import { useRouter } from "vue-router";
 import { useMessage, NConfigProvider, NCascader } from "naive-ui";
 import CDialog from "../components/CDialog.vue";
-import { userRegister, userRegisters, getEmailCode } from "../api/user";
+import { getEmailCode } from "../api/user";
 import { getRegionOptions } from "../utils/utils";
 
 const roleOptions = [
@@ -170,11 +171,7 @@ export default {
     function toLogin() {
       router.push("/login");
     }
-
-    // watch(formVal, () => {
-    //   console.log(formVal.register);
-    // });
-
+    
     function register() {
       formRef.value?.validate(async (err) => {
         if (!err) {
@@ -214,8 +211,8 @@ export default {
   background-size: cover;
 
   .form {
-    padding: 1rem 2rem;
-    border-radius: 15px;
+    padding: 2rem 2rem;
+    border-radius: 10px;
     box-shadow: rgb(0 0 0 / 10%) 0px 12px 20px 0px;
     position: absolute;
     left: 50%;

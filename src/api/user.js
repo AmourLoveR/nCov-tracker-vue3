@@ -36,3 +36,26 @@ export function sendEmailCode(email, code) {
     url: `/user/code/${email}/${code}`,
   });
 }
+
+export function getRegisters(type) {
+  return service.request({
+    method: "get",
+    url: `/user/registers/${type}`,
+  });
+}
+
+export function userApprove(data) {
+  return service.request({
+    method: "post",
+    url: '/user/approve',
+    data
+  });
+}
+
+export function changePwd(data) {
+  return service.request({
+    method: "post",
+    url: '/user/chpwd',
+    data
+  });
+}

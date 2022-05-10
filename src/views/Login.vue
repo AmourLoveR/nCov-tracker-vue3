@@ -21,9 +21,12 @@
             type="password"
           ></n-input>
         </n-form-item>
-        <div class="signup" @click="toSignup"><span>注册</span></div>
+        <div class="signup">
+          <span @click="toChangePwd">忘记密码</span>
+          <span @click="toSignup">注册</span>
+        </div>
         <n-form-item>
-          <n-button :disabled="!disabled" @click="login">登录</n-button>
+          <n-button color="#6474d2" :disabled="!disabled" @click="login">登录</n-button>
         </n-form-item>
       </n-form>
     </div>
@@ -32,16 +35,18 @@
 
 <script>
 import { reactive, computed } from "vue";
+import { useMessage } from "naive-ui";
 import { useRouter } from "vue-router";
 import { userLogin } from "../api/user";
 export default {
   setup() {
     const router = useRouter();
+    const message = useMessage();
 
     const formVal = reactive({
       login: {
-        account: "1853633282@qq.com",
-        password: "13291004986",
+        account: "testcx@test.com",
+        password: "testcx",
       },
     });
 
@@ -64,9 +69,20 @@ export default {
       router.push("/signup");
     }
 
-    function login() {
-      userLogin(formVal.login);
-      router.push("/");
+    function toChangePwd() {
+      router.push("/changepwd")
+    }
+
+    async function login() {
+      const res = await userLogin(formVal.login);
+      if (res.data.msg == "Success") {
+        message.success("登录成功！");
+        setTimeout(() => {
+          router.push("/");
+        }, 2000);
+      } else {
+        message.error("登录失败！");
+      }
     }
 
     return {
@@ -74,6 +90,7 @@ export default {
       rules,
       disabled,
       toSignup,
+      toChangePwd,
       login,
     };
   },
@@ -96,11 +113,15 @@ export default {
     .signup {
       font-size: 13px;
       text-align: right;
-      padding-right: 1rem;
+      padding: 0.5rem;
       margin-top: -0.8rem;
 
       & > span {
         cursor: pointer;
+
+        &:nth-child(1) {
+          float: left;
+        }
       }
     }
 

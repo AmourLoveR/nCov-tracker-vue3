@@ -8,12 +8,12 @@ export default defineConfig({
   server: {
     open: false,
     host: "0.0.0.0",
-      proxy: {
-        "^/api/v1": {
-          target: "http://myhost.fallen-angle.com:8081",
-          changeOrigin: true, //开启代理
-          secure: false, // 接受 运行在 https ,上的服务
-        },
-      },
+      // proxy: {
+      //   "^/api/v1": {
+      //     target: "http://myhost.fallen-angle.com:8082",
+      //     changeOrigin: true, //开启代理
+      //     secure: false, // 接受 运行在 https ,上的服务
+      //   },
+      // },
   },
 });
