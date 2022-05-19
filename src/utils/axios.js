@@ -2,7 +2,7 @@ import axios from "axios";
 import { decodeToken } from "../utils/utils";
 
 const service = axios.create({
-  baseURL: "/api/v1",
+  baseURL: "http://myhost.fallen-angle.com:8081/api/v1",
   // timeout: 10000,
   headers: {
     "Content-Type": "application/json;charset=UTF-8",
