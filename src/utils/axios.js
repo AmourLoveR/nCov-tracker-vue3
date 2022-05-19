@@ -1,11 +1,8 @@
 import axios from "axios";
-import { useUserStore } from "../store/index";
 import { decodeToken } from "../utils/utils";
 
-const userStore = useUserStore();
-
 const service = axios.create({
-  baseURL: "http://myhost.fallen-angle.com:8081/api/v1",
+  baseURL: "/api/v1",
   // timeout: 10000,
   headers: {
     "Content-Type": "application/json;charset=UTF-8",
@@ -33,8 +30,8 @@ service.interceptors.response.use(
     if (response.headers["x-token"]) {
       const token = response.headers["x-token"];
       localStorage.setItem("token", token);
-      const user = decodeToken(token);
-      userStore.setUserinfo(user);
+      // const user = decodeToken(token);
+      // userStore.setUserinfo(user);
     } else if (response.headers["x-token"] == "") {
       location.hash = "login";
     }
@@ -44,8 +41,9 @@ service.interceptors.response.use(
   function (error) {
     // 对响应错误做点什么
     if (window.$message) window.$message.error(error.message);
-    console.log(error.response);
-    return Promise.reject(error);
+    // console.log(error.response);
+    // return Promise.reject(error);
+    return error
   }
 );
 

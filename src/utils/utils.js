@@ -19,6 +19,9 @@ export function formatDate(date, format = "YYYY-MM-DD HH:mm:ss") {
     week: weekArr[date.getDay()],
   };
   for (const key in config) {
+    if (config[key].toString().length == 1) {
+      config[key] = "0" + config[key];
+    }
     format = format.replace(key, config[key]);
   }
   return format;
@@ -28,9 +31,11 @@ export function formatDate(date, format = "YYYY-MM-DD HH:mm:ss") {
 export function decodeToken(token) {
   const infoArr = token.split(".");
   let user = JSON.parse(
-    decodeURIComponent(escape(window.atob(infoArr[1].replace(/_/g, "/").replace(/-/g, "+"))))
+    decodeURIComponent(
+      escape(window.atob(infoArr[1].replace(/_/g, "/").replace(/-/g, "+")))
+    )
   );
-  return user
+  return user;
 }
 
 // 获取地区数据

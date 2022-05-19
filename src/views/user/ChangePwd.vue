@@ -22,7 +22,7 @@
               :loading="getCodeLoading"
               :disabled="getCodeDisabled"
             >
-              {{ getCodeDisabled ? countDown + "后发送" : "发送验证码" }}
+              {{ getCodeDisabled ? countDown + "s后重试" : "发送验证码" }}
             </n-button>
           </n-input-group>
         </n-form-item>
@@ -53,8 +53,7 @@
         round
         :loading="changePwdLoading"
         @click="changePwdAsyncFn"
-        >修改密码</n-button
-      >
+        >修改密码</n-button>
     </div>
   </div>
 </template>
@@ -63,7 +62,7 @@
 import { reactive, ref, watch, provide } from "vue";
 import { useRouter } from "vue-router";
 import { useMessage, NInputGroup } from "naive-ui";
-import { getEmailCode, changePwd } from "../api/user";
+import { getEmailCode, changePwd } from "../../api/user";
 
 const router = useRouter();
 const formRef = ref(null);
@@ -116,6 +115,7 @@ const rules = {
     email: {
       required: true,
       message: "请输入邮箱",
+      trigger: 'blur'
     },
   },
 };
@@ -128,6 +128,7 @@ function toLogin() {
 let getCodeLoading = ref(false);
 let countDown = ref(30);
 let getCodeDisabled = ref(false);
+
 let interval = "";
 async function getEmailCodeAsyncFN() {
   getCodeLoading.value = true;
@@ -168,7 +169,7 @@ function changePwdAsyncFn() {
 .changePwd {
   width: 100%;
   height: 100%;
-  background: url("../assets/imgs/register-bg.png");
+  background: url("../../assets/imgs/register-bg.png");
   background-size: cover;
 
   .form {

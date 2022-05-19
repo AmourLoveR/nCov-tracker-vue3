@@ -68,7 +68,7 @@ function confirm() {
         else if (registerRes.data.msg == "Registered")
           message.warning("该邮箱账号已存在！");
         close();
-      } else message.error("验证码错误！");
+      } else  message.error("验证码错误！");
     }
   });
 }

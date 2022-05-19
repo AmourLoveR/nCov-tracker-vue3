@@ -10,12 +10,10 @@
       <div class="line"><div></div></div>
       <div class="cover">
         <div class="title">
-          <router-link :to="'/preview/' + props.article.id" target="_blank">
-            <!-- <span title="编辑" @click="editor"> -->
+          <router-link :to="preview" target="_blank">
             {{ props.article.title ? props.article.title : "无标题" }}
-            <!-- </span> -->
           </router-link>
-          <n-popselect trigger="click">
+          <n-popselect trigger="click" v-if="!props.public">
             <n-button quaternary circle>
               <template #icon>
                 <n-icon><more-outlined /></n-icon>
@@ -30,9 +28,16 @@
               >
                 发布
               </div>
-              <div class="article-actions-item" @click="deleteArticleAsyncFn">
-                删除
-              </div>
+              <n-popconfirm
+                negative-text="取消"
+                positive-text="确定"
+                @positive-click="deleteArticleAsyncFn"
+              >
+                <template #trigger>
+                  <div class="article-actions-item">删除</div>
+                </template>
+                删除之后无法恢复！
+              </n-popconfirm>
             </template>
           </n-popselect>
         </div>
@@ -43,7 +48,7 @@
 
 <script setup>
 import { useRouter } from "vue-router";
-import { NPopselect } from "naive-ui";
+import { NPopselect, NPopconfirm } from "naive-ui";
 import { MoreOutlined } from "@vicons/antd";
 import { deleteArticle, publish } from "../../api/article";
 const router = useRouter();
@@ -56,7 +61,11 @@ const props = defineProps({
   },
   timeToShow: {
     type: String,
-    default: 'time error'
+    default: "time error",
+  },
+  public: {
+      type: Boolean,
+      default: false
   }
 });
 
@@ -73,18 +82,21 @@ function editor() {
 // 删除文章
 async function deleteArticleAsyncFn() {
   const res = await deleteArticle(props.article.id);
-  if(res.data.msg == 'Success') window.$message.success('文章删除成功')
+  if (res.data.msg == "Success") window.$message.success("文章删除成功");
   // 传递给父组件进行监听，获取最新的文章信息
   emit("articleChange");
 }
 
 async function publishAsyncFn() {
   const res = await publish(props.article.id);
-  if(res.data.msg == 'Success') window.$message.success('文章发布成功')
-  else window.$message.error('文章发布失败！')
+  if (res.data.msg == "Success") window.$message.success("文章发布成功");
+  else window.$message.error("文章发布失败！");
   // 传递给父组件进行监听，获取最新的文章信息
   emit("articleChange");
 }
+
+let preview = (!props.public? '/preview/': '/public/article/') + props.article.id
+console.log(preview);
 </script>
 
 <style lang="scss" scoped>

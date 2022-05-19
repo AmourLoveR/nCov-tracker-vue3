@@ -37,7 +37,7 @@
 import { reactive, computed } from "vue";
 import { useMessage } from "naive-ui";
 import { useRouter } from "vue-router";
-import { userLogin } from "../api/user";
+import { userLogin } from "../../api/user";
 export default {
   setup() {
     const router = useRouter();
@@ -45,8 +45,8 @@ export default {
 
     const formVal = reactive({
       login: {
-        account: "testcx@test.com",
-        password: "testcx",
+        account: "",
+        password: "",
       },
     });
 
@@ -75,7 +75,7 @@ export default {
 
     async function login() {
       const res = await userLogin(formVal.login);
-      if (res.data.msg == "Success") {
+      if (res.data.msg == "Success" && res.data?.data?.msg !== 'failed') {
         message.success("登录成功！");
         setTimeout(() => {
           router.push("/");
@@ -140,7 +140,7 @@ export default {
 }
 @media screen and (min-width: 500px) {
   .login {
-    background: url("../assets/imgs/login-bg.jpg") no-repeat;
+    background: url("../../assets/imgs/login-bg.jpg") no-repeat;
     background-size: cover;
 
     .form {

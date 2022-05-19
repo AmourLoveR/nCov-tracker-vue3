@@ -1,29 +1,31 @@
 <template>
   <div id="article" ref="article">
-    <div class="actions">
-      <n-button color="#1288ff" @click="toEditor">写文章</n-button>
-    </div>
-    <n-tabs type="card">
-      <n-tab-pane name="notpublished" tab="草稿箱">
-        <article-timeline
-          v-for="item in notpublishedArticle"
-          :key="item.id"
-          :timeToShow="item.modifyTime"
-          :article="item"
-          @articleChange="getUserArticlesAsyncFn"
-        />
-      </n-tab-pane>
-      <n-tab-pane name="published" tab="已发布">
-        <article-timeline
-          v-for="item in publishedArticle"
-          :key="item.id"
-          :timeToShow="item.createTime"
-          :article="item"
-          :published="true"
-          @articleChange="getUserArticlesAsyncFn"
-        />
-      </n-tab-pane>
-    </n-tabs>
+    <n-card content-style="padding: 15px">
+      <div class="actions">
+        <n-button color="#1288ff" @click="toEditor">写文章</n-button>
+      </div>
+      <n-tabs type="card">
+        <n-tab-pane name="notpublished" tab="草稿箱">
+          <article-timeline
+            v-for="item in notpublishedArticle"
+            :key="item.id"
+            :timeToShow="item.modifyTime"
+            :article="item"
+            @articleChange="getUserArticlesAsyncFn"
+          />
+        </n-tab-pane>
+        <n-tab-pane name="published" tab="已发布">
+          <article-timeline
+            v-for="item in publishedArticle"
+            :key="item.id"
+            :timeToShow="item.createTime"
+            :article="item"
+            :published="true"
+            @articleChange="getUserArticlesAsyncFn"
+          />
+        </n-tab-pane>
+      </n-tabs>
+    </n-card>
   </div>
 </template>
 
@@ -32,19 +34,9 @@ import { ref, watch } from "vue";
 import { useRouter } from "vue-router";
 import { NTabs, NTabPane } from "naive-ui";
 import ArticleTimeline from "../../components/article/ArticleTimeline.vue";
-import { getAllArticles, getUserArticles } from "../../api/article";
+import { getUserArticles } from "../../api/article";
 const router = useRouter();
 
-// 获取面向用户文章
-let articles = ref(null);
-getAllArticlesAsyncFn();
-async function getAllArticlesAsyncFn() {
-  const res = await getAllArticles();
-  articles.value = res.data.data;
-  articles.value = articles.value.sort((a, b) => {
-    return sortByTime(a.createTime, b.createTime);
-  });
-}
 
 // 获取工作人员管理文章
 let publishedArticle = ref(null);

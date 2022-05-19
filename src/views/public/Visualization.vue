@@ -15,7 +15,7 @@
         <n-button text color="#6BB2A0" title="全屏" @click="enterfullscreen">
           <template #icon>
             <n-icon>
-              <Scan />
+              <expand-outline />
             </n-icon>
           </template>
         </n-button>
@@ -114,21 +114,21 @@
 
 <script>
 import { ref, reactive, toRefs, onBeforeMount, onBeforeUnmount } from "vue";
-import { Scan } from "@vicons/ionicons5";
+import { ExpandOutline } from "@vicons/ionicons5";
 import {
   getChina,
   getCity,
   getProvince,
   getChinaTrend,
-} from "../api/statistics";
-import { formatDate } from "../utils/utils";
-import China from "../components/chart/China.vue";
-import GrowthTrend from "../components/chart/GrowthTrend.vue";
-import IncreasedProportion from "../components/visualization/IncreasedProportion.vue";
+} from "../../api/statistics";
+import { formatDate } from "../../utils/utils";
+import China from "../../components/chart/China.vue";
+import GrowthTrend from "../../components/chart/GrowthTrend.vue";
+import IncreasedProportion from "../../components/visualization/IncreasedProportion.vue";
 
 export default {
   name: "Visualization",
-  components: { China, Scan, GrowthTrend, IncreasedProportion },
+  components: { China, ExpandOutline, GrowthTrend, IncreasedProportion },
   setup() {
     const state = reactive({
       chinaRes: {},
@@ -143,9 +143,6 @@ export default {
     const proportionRef = ref(null);
 
     let activeTrend = ref("add"); // 定义趋势图active
-    // function selectTrend(type) {
-    //   acti
-    // }
 
     // 定义时间数据
     const date = reactive({
@@ -168,7 +165,6 @@ export default {
     async function getChinaTrendAsyncFn() {
       const res = await getChinaTrend();
       state.chinaTrend = res.data.data;
-      console.log(state.chinaTrend);
     }
 
     onBeforeMount(async () => {
@@ -262,7 +258,7 @@ export default {
   min-height: 100vh;
   height: 100vh;
   background-color: #010101;
-  background: url("../assets/imgs/background.jpeg") no-repeat;
+  background: url("../../assets/imgs/background.jpeg") no-repeat;
   background-size: cover;
 
   .header {

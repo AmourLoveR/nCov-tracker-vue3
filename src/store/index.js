@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 
-export const useUserStore = defineStore("main", {
+export const useUserStore = defineStore("user", {
   state: () => {
     return {
       username: "no info",
@@ -17,3 +17,18 @@ export const useUserStore = defineStore("main", {
     },
   },
 });
+
+export const useNotifyStore = defineStore("notify", {
+  state: () => {
+    return {
+      count: 0,
+    };
+  },
+  getters: {},
+  actions: {
+    setCount(count) {
+      this.count = count
+    },
+  },
+});
+

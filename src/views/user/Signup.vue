@@ -10,12 +10,6 @@
         label-width="auto"
         require-mark-placement="right-hanging"
       >
-        <!-- <n-form-item label="资质:" path="register.aptitude">
-          <n-input
-            v-model:value="formVal.register.aptitude"
-            :placeholder="isPlaceholderShow ? '资质' : ''"
-          ></n-input>
-        </n-form-item> -->
         <n-form-item label="角色:" path="register.role">
           <n-select
             v-model:value="formVal.register.role"
@@ -74,7 +68,7 @@
         round
         :loading="buttonLoading"
         @click="register"
-      >注册</n-button>
+        >注册</n-button>
     </div>
   </div>
   <c-dialog v-show="dialogShow" @close="dialogShow = false"></c-dialog>
@@ -84,9 +78,9 @@
 import { reactive, ref, watch, provide } from "vue";
 import { useRouter } from "vue-router";
 import { useMessage, NConfigProvider, NCascader } from "naive-ui";
-import CDialog from "../components/CDialog.vue";
-import { getEmailCode } from "../api/user";
-import { getRegionOptions } from "../utils/utils";
+import CDialog from "../../components/CDialog.vue";
+import { getEmailCode } from "../../api/user";
+import { getRegionOptions } from "../../utils/utils";
 
 const roleOptions = [
   {
@@ -116,7 +110,6 @@ export default {
 
     const formVal = reactive({
       register: {
-        aptitude: "",
         email: "",
         password: "",
         confirmPsd: "",
@@ -161,6 +154,10 @@ export default {
           required: true,
           message: "请输入邮箱",
         },
+        phone: {
+          required: true,
+          message: "请输入联系电话",
+        },
       },
     };
 
@@ -171,20 +168,22 @@ export default {
     function toLogin() {
       router.push("/login");
     }
-    
+
     function register() {
       formRef.value?.validate(async (err) => {
         if (!err) {
           buttonLoading.value = true;
-          await getEmailCode(formVal.register.email);
-          dialogShow.value = true;
+          try {
+            await getEmailCode(formVal.register.email);
+          } finally {
+            dialogShow.value = true;
+          }
           buttonLoading.value = false;
-          // await userRegister(formVal.register);
         } else message.error("表单校验未通过！");
       });
     }
 
-    provide('register', formVal.register)
+    provide("register", formVal.register);
 
     return {
       formRef,
@@ -207,7 +206,7 @@ export default {
 .register {
   width: 100%;
   height: 100%;
-  background: url("../assets/imgs/register-bg.png");
+  background: url("../../assets/imgs/register-bg.png");
   background-size: cover;
 
   .form {

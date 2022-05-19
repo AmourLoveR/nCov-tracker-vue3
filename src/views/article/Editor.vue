@@ -121,6 +121,7 @@ function confirm() {
 
 <style lang="scss" scoped>
 #editor {
+  background: #fff;
   .header {
     padding-right: 27px;
     height: 60px;

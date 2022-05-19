@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <n-config-provider :theme-overrides="themeOverrides">
+    <n-config-provider :locale="zhCN" :date-locale="dateZhCN" :theme-overrides="themeOverrides">
       <n-message-provider>
         <n-dialog-provider>
           <router-view></router-view>
@@ -11,11 +11,16 @@
 </template>
 
 <script setup>
-import { NMessageProvider, NDialogProvider, NConfigProvider } from "naive-ui";
+import {
+  NMessageProvider,
+  NDialogProvider,
+  NConfigProvider,
+  zhCN,
+  dateZhCN,
+} from "naive-ui";
 
 const themeOverrides = {
   Menu: {
-    // fontSize: '1rem',
     itemTextColor: "#BBB",
     itemIconColor: "#BBB",
     itemTextColorHover: "#FFF",
@@ -25,6 +30,12 @@ const themeOverrides = {
     itemColorActive: "#5a92f5",
     itemIconColorCollapsed: "#BBB",
     itemColorActiveCollapsed: "#5a92f5",
+    itemTextColorChildActive: "#fff",
+    itemIconColorChildActive: "#fff",
+    arrowColor: "#bbb",
+    arrowColorHover: "#fff",
+    arrowColorActive: "#fff",
+    arrowColorChildActive: "#fff",
   },
   Drawer: {
     bodyPadding: 0,
