@@ -1,0 +1,98 @@
+Date : 2022-05-19 15:27:17
+Directory : d:\Projects\vue\nCov-tracker-vue3\src
+Total : 49 files,  32718 codes, 91 comments, 508 blanks, all 33317 lines
+
+Languages
++------------+------------+------------+------------+------------+------------+
+| language   | files      | code       | comment    | blank      | total      |
++------------+------------+------------+------------+------------+------------+
+| JSON       |          1 |     27,295 |          0 |          0 |     27,295 |
+| Vue.js     |         34 |      4,893 |         77 |        454 |      5,424 |
+| JavaScript |         10 |        520 |         14 |         54 |        588 |
+| XML        |          3 |          5 |          0 |          0 |          5 |
+| CSS        |          1 |          5 |          0 |          0 |          5 |
++------------+------------+------------+------------+------------+------------+
+
+Directories
++----------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                                                   | files      | code       | comment    | blank      | total      |
++----------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                                                      |         49 |     32,718 |         91 |        508 |     33,317 |
+| api                                                                                    |          5 |        202 |          0 |         32 |        234 |
+| assets                                                                                 |          4 |     27,300 |          0 |          0 |     27,300 |
+| assets\imgs                                                                            |          3 |          5 |          0 |          0 |          5 |
+| assets\imgs\article                                                                    |          1 |          1 |          0 |          0 |          1 |
+| assets\json                                                                            |          1 |     27,295 |          0 |          0 |     27,295 |
+| components                                                                             |         15 |      1,870 |         21 |        155 |      2,046 |
+| components\article                                                                     |          2 |        202 |          5 |         26 |        233 |
+| components\chart                                                                       |          2 |        216 |          9 |         15 |        240 |
+| components\location                                                                    |          1 |        103 |          1 |         10 |        114 |
+| components\observation                                                                 |          5 |        816 |          5 |         46 |        867 |
+| components\observation\info                                                            |          4 |        539 |          4 |         33 |        576 |
+| components\report                                                                      |          2 |        302 |          0 |         30 |        332 |
+| components\visualization                                                               |          1 |         66 |          0 |          8 |         74 |
+| router                                                                                 |          1 |        114 |          0 |          4 |        118 |
+| store                                                                                  |          1 |         31 |          0 |          4 |         35 |
+| utils                                                                                  |          2 |        147 |         14 |         10 |        171 |
+| views                                                                                  |         18 |      2,958 |         54 |        288 |      3,300 |
+| views\article                                                                          |          3 |        302 |         15 |         35 |        352 |
+| views\management                                                                       |          4 |        749 |         12 |         58 |        819 |
+| views\public                                                                           |          3 |        599 |         13 |         68 |        680 |
+| views\user                                                                             |          3 |        595 |          1 |         56 |        652 |
++----------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Files
++----------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| filename                                                                               | language   | code       | comment    | blank      | total      |
++----------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| d:\Projects\vue\nCov-tracker-vue3\src\App.vue                                          | Vue.js     |         65 |          2 |         11 |         78 |
+| d:\Projects\vue\nCov-tracker-vue3\src\api\article.js                                   | JavaScript |         38 |          0 |          6 |         44 |
+| d:\Projects\vue\nCov-tracker-vue3\src\api\management.js                                | JavaScript |         67 |          0 |         11 |         78 |
+| d:\Projects\vue\nCov-tracker-vue3\src\api\notification.js                              | JavaScript |         19 |          0 |          3 |         22 |
+| d:\Projects\vue\nCov-tracker-vue3\src\api\statistics.js                                | JavaScript |         25 |          0 |          4 |         29 |
+| d:\Projects\vue\nCov-tracker-vue3\src\api\user.js                                      | JavaScript |         53 |          0 |          8 |         61 |
+| d:\Projects\vue\nCov-tracker-vue3\src\assets\imgs\article\Pencil.svg                   | XML        |          1 |          0 |          0 |          1 |
+| d:\Projects\vue\nCov-tracker-vue3\src\assets\imgs\menuClose.svg                        | XML        |          2 |          0 |          0 |          2 |
+| d:\Projects\vue\nCov-tracker-vue3\src\assets\imgs\menuOpen.svg                         | XML        |          2 |          0 |          0 |          2 |
+| d:\Projects\vue\nCov-tracker-vue3\src\assets\json\china.json                           | JSON       |     27,295 |          0 |          0 |     27,295 |
+| d:\Projects\vue\nCov-tracker-vue3\src\components\CButton.vue                           | Vue.js     |         61 |          0 |          9 |         70 |
+| d:\Projects\vue\nCov-tracker-vue3\src\components\CDialog.vue                           | Vue.js     |        104 |          1 |         11 |        116 |
+| d:\Projects\vue\nCov-tracker-vue3\src\components\article\ArticleTimeline.vue           | Vue.js     |        172 |          5 |         20 |        197 |
+| d:\Projects\vue\nCov-tracker-vue3\src\components\article\Card.vue                      | Vue.js     |         30 |          0 |          6 |         36 |
+| d:\Projects\vue\nCov-tracker-vue3\src\components\chart\China.vue                       | Vue.js     |        107 |          6 |          8 |        121 |
+| d:\Projects\vue\nCov-tracker-vue3\src\components\chart\GrowthTrend.vue                 | Vue.js     |        109 |          3 |          7 |        119 |
+| d:\Projects\vue\nCov-tracker-vue3\src\components\location\Insert.vue                   | Vue.js     |        103 |          1 |         10 |        114 |
+| d:\Projects\vue\nCov-tracker-vue3\src\components\observation\Insert.vue                | Vue.js     |        277 |          1 |         13 |        291 |
+| d:\Projects\vue\nCov-tracker-vue3\src\components\observation\info\BaseInfo.vue         | Vue.js     |        339 |          3 |         13 |        355 |
+| d:\Projects\vue\nCov-tracker-vue3\src\components\observation\info\Faker.vue            | Vue.js     |         56 |          0 |          7 |         63 |
+| d:\Projects\vue\nCov-tracker-vue3\src\components\observation\info\PcrRecord.vue        | Vue.js     |        123 |          1 |          9 |        133 |
+| d:\Projects\vue\nCov-tracker-vue3\src\components\observation\info\Situation.vue        | Vue.js     |         21 |          0 |          4 |         25 |
+| d:\Projects\vue\nCov-tracker-vue3\src\components\report\CityReport.vue                 | Vue.js     |        159 |          0 |         19 |        178 |
+| d:\Projects\vue\nCov-tracker-vue3\src\components\report\Domestic.vue                   | Vue.js     |        143 |          0 |         11 |        154 |
+| d:\Projects\vue\nCov-tracker-vue3\src\components\visualization\IncreasedProportion.vue | Vue.js     |         66 |          0 |          8 |         74 |
+| d:\Projects\vue\nCov-tracker-vue3\src\index.css                                        | CSS        |          5 |          0 |          0 |          5 |
+| d:\Projects\vue\nCov-tracker-vue3\src\main.js                                          | JavaScript |         26 |          0 |          4 |         30 |
+| d:\Projects\vue\nCov-tracker-vue3\src\router\index.js                                  | JavaScript |        114 |          0 |          4 |        118 |
+| d:\Projects\vue\nCov-tracker-vue3\src\store\index.js                                   | JavaScript |         31 |          0 |          4 |         35 |
+| d:\Projects\vue\nCov-tracker-vue3\src\utils\axios.js                                   | JavaScript |         34 |         11 |          6 |         51 |
+| d:\Projects\vue\nCov-tracker-vue3\src\utils\utils.js                                   | JavaScript |        113 |          3 |          4 |        120 |
+| d:\Projects\vue\nCov-tracker-vue3\src\views\404.vue                                    | Vue.js     |         43 |          0 |          7 |         50 |
+| d:\Projects\vue\nCov-tracker-vue3\src\views\Accounts.vue                               | Vue.js     |        170 |          2 |         11 |        183 |
+| d:\Projects\vue\nCov-tracker-vue3\src\views\Index.vue                                  | Vue.js     |        324 |          9 |         32 |        365 |
+| d:\Projects\vue\nCov-tracker-vue3\src\views\Notification.vue                           | Vue.js     |        105 |          2 |         12 |        119 |
+| d:\Projects\vue\nCov-tracker-vue3\src\views\Public.vue                                 | Vue.js     |         71 |          0 |          9 |         80 |
+| d:\Projects\vue\nCov-tracker-vue3\src\views\article\Article.vue                        | Vue.js     |         90 |          2 |          9 |        101 |
+| d:\Projects\vue\nCov-tracker-vue3\src\views\article\Editor.vue                         | Vue.js     |        172 |         13 |         17 |        202 |
+| d:\Projects\vue\nCov-tracker-vue3\src\views\article\Preview.vue                        | Vue.js     |         40 |          0 |          9 |         49 |
+| d:\Projects\vue\nCov-tracker-vue3\src\views\management\Info.vue                        | Vue.js     |        108 |          1 |         11 |        120 |
+| d:\Projects\vue\nCov-tracker-vue3\src\views\management\Location.vue                    | Vue.js     |        170 |          4 |         18 |        192 |
+| d:\Projects\vue\nCov-tracker-vue3\src\views\management\Observation.vue                 | Vue.js     |        345 |          4 |         20 |        369 |
+| d:\Projects\vue\nCov-tracker-vue3\src\views\management\Relationship.vue                | Vue.js     |        126 |          3 |          9 |        138 |
+| d:\Projects\vue\nCov-tracker-vue3\src\views\public\PublicArticle.vue                   | Vue.js     |         59 |          2 |          6 |         67 |
+| d:\Projects\vue\nCov-tracker-vue3\src\views\public\Report.vue                          | Vue.js     |        125 |          1 |         12 |        138 |
+| d:\Projects\vue\nCov-tracker-vue3\src\views\public\Visualization.vue                   | Vue.js     |        415 |         10 |         50 |        475 |
+| d:\Projects\vue\nCov-tracker-vue3\src\views\user\ChangePwd.vue                         | Vue.js     |        203 |          1 |         17 |        221 |
+| d:\Projects\vue\nCov-tracker-vue3\src\views\user\Login.vue                             | Vue.js     |        149 |          0 |         19 |        168 |
+| d:\Projects\vue\nCov-tracker-vue3\src\views\user\Signup.vue                            | Vue.js     |        243 |          0 |         20 |        263 |
+| Total                                                                                  |            |     32,718 |         91 |        508 |     33,317 |
++----------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+

@@ -6,7 +6,7 @@ const routes = [
 		path: '/',
 		name: 'index',
 		component: Index,
-    redirect: '/observation',
+		redirect: '/observation',
 		children: [
 			{
 				path: 'observation',
@@ -23,11 +23,11 @@ const routes = [
 				name: 'location',
 				component: () => import('../views/management/Location.vue'),
 			},
-      {
-        path: 'relationship',
-        name: 'relationship',
-        component: () => import('../views/management/Relationship.vue')
-      },
+			{
+				path: 'relationship',
+				name: 'relationship',
+				component: () => import('../views/management/Relationship.vue'),
+			},
 			{
 				path: 'article',
 				name: 'article',
@@ -68,6 +68,7 @@ const routes = [
 		path: '/public',
 		name: 'public',
 		component: () => import('../views/Public.vue'),
+		redirect: '/public/report',
 		children: [
 			{
 				path: 'report',

@@ -253,7 +253,7 @@ function toNotify() {
 			cursor: pointer;
 			padding: 0 10px;
 			border-radius: 4px;
-			right: 7rem;
+			right: 130px;
 
 			&:hover {
 				color: rgb(157, 157, 157);

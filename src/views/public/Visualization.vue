@@ -389,7 +389,7 @@ export default {
 
     .growth-trend {
       width: 100%;
-      height: 40%;
+      height: 300px;
       padding-left: 0.8rem;
 
       .tren-header {
@@ -432,12 +432,12 @@ export default {
 
     .china-hover {
       width: 100%;
-      height: 70%;
+      height: 500px;
     }
 
     .proportion-hover {
       width: 100%;
-      height: 40%;
+      height: 300px;
       padding-left: 0.8rem;
     }
 

@@ -22,7 +22,7 @@
         </n-card>
       </n-grid-item>
       <n-grid-item span="38" offset="1">
-        <base-info v-if="activeMenu == 'base'" />
+        <base-info v-if="activeMenu == 'base'" @changeInfo="getObservationAsyncFn" />
         <situation v-else-if="activeMenu == 'situation'" />
         <pcr-record v-else-if="activeMenu == 'pcr'"></pcr-record>
         <faker v-else></faker>
@@ -79,6 +79,7 @@ async function getObservationAsyncFn () {
 }
 provide("observation", observation);
 provide('id', route.params.id)
+
 </script>
 
 <style lang="scss" scoped>
